@@ -1,7 +1,7 @@
 // import React from 'react';
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants";
 import {
   getMachineMaster,
   getMaterialMaster,

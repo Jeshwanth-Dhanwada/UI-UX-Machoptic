@@ -1,81 +1,22 @@
 /* eslint-disable import/no-anonymous-default-export */
-import Dagre from "@dagrejs/dagre";
+
 import React, { useCallback, useEffect, useState } from "react";
-import Edge from "./component/edge.js";
-import Node from "./component/Node.js";
-import NodesComponent from "./component/nodes.js";
-import DashboardComponent from "./component/Dashboard-component.js";
-import ShowNodes from "./component/showNodes.js"
-import ShowRoutes from "./component/showRoutes.js"
-import RoutePopup from "./component/Route.js";
 import DashboardLayout from "./layout/dashboard.js";
 
-
-import ReactFlow, {
+import {
   ReactFlowProvider,
-  // Panel,
   useNodesState,
   useEdgesState,
   useReactFlow,
-  // Controls,
-  // Background,
-  MiniMap,
-  addEdge,
-  MarkerType
+  MarkerType,
 } from "reactflow";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomeComponent from "./component/homeComponent.js"
-// import department from "./component/department.js"
-// import MiniMapNode from './MiniMapNode.js';
 
 import { initialNodes, initialEdges } from "./nodes-edges.js";
 import "reactflow/dist/style.css";
-// import CustomNode from './component/customnode.js'
 import "bootstrap/dist/css/bootstrap.min.css";
-import ShovelNodesView from "./component/shovelNodesView.js";
-import ShovelNodes from "./views/shovelNodes.js";
-import SampleView from "./views/sampleView.js";
+import ThemeProvider from "./theme/index.js";
 
-// import { initialNodes, initialEdges } from './nodes-edges.js';
-// import { Tooltip as BsTooltip } from "bootstrap"
-let directionOn = ''
-
-const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-
-// Convert the array to JSON format
-
-
-const getLayoutedElements = (nodes, edges, options, direction) => {
-  // const isHorizontal = direction === "LR";
-  // g.setGraph({ rankdir: direction });
-  g.setGraph({ rankdir: options.direction });
-
-  edges.forEach((edge) => g.setEdge(edge.source, edge.target));
-  nodes.forEach((node) => g.setNode(node.id, node));
-
-  Dagre.layout(g);
-
-  return {
-    nodes: nodes.map((node) => {
-      const { x, y } = g.node(node.id);
-      return { ...node, position: { x, y } };
-    }),
-    edges,
-  };
-};
-
-
-
-// const nodeColor = (node) => {
-//   switch (node.type) {
-//     case "input":
-//       return "#6ede87";
-//     case "output":
-//       return "#6865A5";
-//     default:
-//       return "#ff0072";
-//   }
-// };
+let directionOn = "";
 
 let id = 1;
 // let nodeId = 0;
@@ -90,14 +31,10 @@ const LayoutFlow = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isSideBarExpanded, setIsExpanded] = React.useState(false);
-  // const onConnect = useCallback((params) => 
-  //       setEdges((edge) => 
-  //       addEdge(params, edge, type:"smoothstep")), 
+  // const onConnect = useCallback((params) =>
+  //       setEdges((edge) =>
+  //       addEdge(params, edge, type:"smoothstep")),
   //       [setEdges]);
-
-
-
-
 
   // Add Node --------------------------------------
 
@@ -118,48 +55,47 @@ const LayoutFlow = () => {
           data: {
             label: `Node ${id}`,
           },
-          sourcePosition: 'right',
-          targetPosition: 'left',
+          sourcePosition: "right",
+          targetPosition: "left",
           style: {
-            background: 'white', // Set background color
-            color: 'black',     // Set text color
-            borderColor: '#000',
-            borderStyle: 'solid',
-            borderWidth: '1px',
-            fontSize: '14', // Set the font size
-            fontStyle: 'normal', // Set the font style
-            width: '150',
-            height: '45',
-            justifycontent: 'center', /* Horizontally center */
-            alignitems: 'center'/* Vertically center */
+            background: "white", // Set background color
+            color: "black", // Set text color
+            borderColor: "#000",
+            borderStyle: "solid",
+            borderWidth: "1px",
+            fontSize: "14", // Set the font size
+            fontStyle: "normal", // Set the font style
+            width: "150",
+            height: "45",
+            justifycontent: "center" /* Horizontally center */,
+            alignitems: "center" /* Vertically center */,
           },
         };
         const newEdge = {
           id: `${newNode.id}`,
-          source: 'left',
-          target: '',
+          source: "left",
+          target: "",
           type: "smoothstep",
           animated: false,
-          label: 'New Label',
+          label: "New Label",
           style: {
             strokeWidth: 1,
-            stroke: '#000'
+            stroke: "#000",
           },
           markerEnd: {
             type: MarkerType.ArrowClosed,
             width: 25,
             height: 25,
-            color: '#000',
-            arrow: true
+            color: "#000",
+            arrow: true,
           },
         };
 
         addNodes(newNode, newEdge, setEdges);
-        console.log(newNode, 'new node')
-        console.log(nodes, 'new node')
+        console.log(newNode, "new node");
+        console.log(nodes, "new node");
       }
-    }
-    else {
+    } else {
       setConsecutiveAddCounter(0);
       const xOffset = 200; // Initial x-offset
       const yOffset = 0; // Initial y-offset
@@ -174,7 +110,6 @@ const LayoutFlow = () => {
           y += offset;
         }
         return { x, y };
-
       };
 
       console.log("something", initialNodes);
@@ -188,27 +123,27 @@ const LayoutFlow = () => {
         newY,
         offsetIncrement
       );
-      if (directionOn === 'TB') {
+      if (directionOn === "TB") {
         const newNode = {
           id: getId(),
           position: { x: finalX, y: finalY },
-          sourcePosition: 'bottom',
-          targetPosition: 'top',
+          sourcePosition: "bottom",
+          targetPosition: "top",
           data: {
             label: `Node ${id}`,
           },
           style: {
-            background: 'white', // Set background color
-            color: 'black',     // Set text color
-            borderColor: '#000',
-            borderStyle: 'solid',
-            borderWidth: '1px',
-            fontSize: '14', // Set the font size
-            fontStyle: 'normal', // Set the font style
-            width: '150',
-            height: '45',
-            justifycontent: 'center', /* Horizontally center */
-            alignitems: 'center'/* Vertically center */
+            background: "white", // Set background color
+            color: "black", // Set text color
+            borderColor: "#000",
+            borderStyle: "solid",
+            borderWidth: "1px",
+            fontSize: "14", // Set the font size
+            fontStyle: "normal", // Set the font style
+            width: "150",
+            height: "45",
+            justifycontent: "center" /* Horizontally center */,
+            alignitems: "center" /* Vertically center */,
           },
         };
         const newEdge = {
@@ -217,41 +152,40 @@ const LayoutFlow = () => {
           target: newNode.id,
           type: "smoothstep",
           animated: false,
-          label: 'New Label',
+          label: "New Label",
           style: {
             strokeWidth: 1,
-            stroke: '#000'
+            stroke: "#000",
           },
           markerEnd: {
             type: MarkerType.ArrowClosed,
             width: 25,
             height: 25,
-            color: '#000',
-            arrow: true
+            color: "#000",
+            arrow: true,
           },
         };
         addNodes(newNode);
         setEdges((prevEdges) => [...prevEdges, newEdge]);
-      }
-      else {
+      } else {
         const newNode = {
           id: getId(),
           position: { x: finalX, y: finalY },
-          sourcePosition: 'right',
-          targetPosition: 'left',
+          sourcePosition: "right",
+          targetPosition: "left",
           data: {
             label: `Node ${id}`,
           },
           style: {
-            background: 'white', // Set background color
-            color: 'black',     // Set text color
-            borderColor: '#000',
-            borderStyle: 'solid',
-            borderWidth: '1px',
-            fontSize: '14', // Set the font size
-            fontStyle: 'normal', // Set the font style
-            width: '150',
-            height: '45'
+            background: "white", // Set background color
+            color: "black", // Set text color
+            borderColor: "#000",
+            borderStyle: "solid",
+            borderWidth: "1px",
+            fontSize: "14", // Set the font size
+            fontStyle: "normal", // Set the font style
+            width: "150",
+            height: "45",
           },
         };
         const newEdge = {
@@ -260,34 +194,28 @@ const LayoutFlow = () => {
           target: newNode.id,
           type: "smoothstep",
           animated: false,
-          label: 'New Label',
+          label: "New Label",
           style: {
             strokeWidth: 1,
-            stroke: '#000'
+            stroke: "#000",
           },
           markerEnd: {
             type: MarkerType.ArrowClosed,
             width: 25,
             height: 25,
-            color: '#000',
-            arrow: true
+            color: "#000",
+            arrow: true,
           },
         };
         addNodes(newNode);
         setEdges((prevEdges) => [...prevEdges, newEdge]);
-
       }
     }
-
   }, [addNodes, consecutiveAddCounter, nodes, setEdges]);
-
-
-
 
   // Delete Node -------------------------------
 
-
-  const [activePage, setActivePage] = useState('');
+  const [activePage, setActivePage] = useState("");
 
   // const handleLinkClick = (pageName) => {
   //   setActivePage(pageName);
@@ -296,32 +224,19 @@ const LayoutFlow = () => {
 
   useEffect(() => {
     const observerErrorHandler = (e) => {
-      if (e.message === 'ResizeObserver loop completed with undelivered notifications.') {
+      if (
+        e.message ===
+        "ResizeObserver loop completed with undelivered notifications."
+      ) {
         e.stopImmediatePropagation();
       }
     };
-    
-    window.addEventListener('error', observerErrorHandler);
-  },[])
-  
-  
+
+    window.addEventListener("error", observerErrorHandler);
+  }, []);
 
   return (
     <div style={{ display: "flex" }}>
-      {/* <div
-          style={{
-            width: sidebarCollapsed ? "5%" : "20%",
-            transition: "width 0.1s",
-            zIndex: 2,
-            overflow: "hidden",
-          }}
-        >
-          <Sidebar 
-                onSidebarClick={toggleSidebar}
-                setActivePage={setActivePage}
-                />
-        </div> */}
-      {/* <DashboardLayout/> */}
       <div
         style={{
           width: sidebarCollapsed ? "100%" : "100%",
@@ -329,32 +244,20 @@ const LayoutFlow = () => {
           zIndex: 1,
         }}
       >
-        {/* <div class="sticky-top">
-              <Navbar activePage={activePage}/>
-          </div> */}
-        {/* <HomeComponent /> */}
         <DashboardLayout />
       </div>
     </div>
   );
 };
 
-export default function () {
+const App = () => {
   return (
-
-    <ReactFlowProvider>
-
-      {/* <MiniMap
-        nodeColor={nodeColor}
-        nodeStrokeWidth={3}
-        // nodeComponent={MiniMapNode}
-        zoomable
-        pannable
-      /> */}
-      <LayoutFlow>
-
-      </LayoutFlow>
-
-    </ReactFlowProvider>
+    <ThemeProvider>
+      <ReactFlowProvider>
+        <LayoutFlow />
+      </ReactFlowProvider>
+    </ThemeProvider>
   );
-}
+};
+
+export default App;

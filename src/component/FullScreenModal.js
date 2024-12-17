@@ -170,7 +170,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import List from "@mui/material/List";
@@ -286,7 +286,6 @@ export default function FullScreenDialog({
     return data[0]?.nodeCategory !== "Waste";
   };
 
-
   const getFormattedToday = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -377,8 +376,8 @@ export default function FullScreenDialog({
     return updatedReport;
   };
 
-  console.log(fromDate)
-  console.log(toDate)
+  console.log(fromDate);
+  console.log(toDate);
   const setReportData = () => {
     const inputDetails = ActivityLog.map((item) => {
       const matchedData = batchData.filter(
@@ -387,8 +386,8 @@ export default function FullScreenDialog({
           item?.date >= fromDate &&
           item?.date <= toDate &&
           item?.id == data?.consumedActivityId &&
-          item?.jobId == data?.jobId 
-          // && item?.MachinenodeId == FullNodeData?.nodeId
+          item?.jobId == data?.jobId
+        // && item?.MachinenodeId == FullNodeData?.nodeId
       );
       return matchedData.map((value) => ({
         ...value,
@@ -399,7 +398,9 @@ export default function FullScreenDialog({
       }));
     }).flat();
 
-    const filterInputDetails  = inputDetails.filter((item)=>item.MachinenodeId == FullNodeData.nodeId)
+    const filterInputDetails = inputDetails.filter(
+      (item) => item.MachinenodeId == FullNodeData.nodeId
+    );
     let wasteData = [];
     let outputDetails = ActivityLog.map((item) => {
       const matchedData = batchData.filter(
@@ -432,11 +433,11 @@ export default function FullScreenDialog({
         }
       });
     }).flat();
-    console.log(outputDetails,"filterInputDetails")
+    console.log(outputDetails, "filterInputDetails");
     outputDetails = [...outputDetails, ...wasteData];
     const output = outputDetails.filter((item) => item !== undefined);
     setReportsData(getUpdatedReport(filterInputDetails, output));
-//     setReportsData(getUpdatedReport(inputDetails, output));
+    //     setReportsData(getUpdatedReport(inputDetails, output));
   };
 
   const handleClose = () => {

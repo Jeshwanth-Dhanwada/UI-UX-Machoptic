@@ -13,10 +13,10 @@ import { FaCheck, FaMinus, FaPlus, FaXmark } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import axios from "axios";
 import AuthContext from "../context/AuthProvider";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants";
 import { FaEdit } from "react-icons/fa";
 
-function AgentSupplies({tableHeight}) {
+function AgentSupplies({ tableHeight }) {
   const { auth } = useContext(AuthContext);
   const [agentSuppliesData, setAgentSuppliesData] = useState([]);
   const showAgentSupplies = async (key) => {
@@ -137,9 +137,9 @@ function AgentSupplies({tableHeight}) {
   };
 
   const [opendeletepopup, setOpenDelete] = useState(false);
-  const [agentSuppliesId,setAgentSuppliesId] = useState()
+  const [agentSuppliesId, setAgentSuppliesId] = useState();
   const handleClickdeletepopup = (Id) => {
-    setAgentSuppliesId(Id)
+    setAgentSuppliesId(Id);
     setOpenDelete(true);
   };
   const handleDeleteClose = () => {
@@ -194,21 +194,23 @@ function AgentSupplies({tableHeight}) {
   };
   const [height, setHeight] = useState();
   useEffect(() => {
-    console.log(tableHeight,"heightt")
-    if(tableHeight > '1' && tableHeight < '360'){
+    console.log(tableHeight, "heightt");
+    if (tableHeight > "1" && tableHeight < "360") {
       setHeight(tableHeight);
-    }
-    else{
-      setHeight('350px')
+    } else {
+      setHeight("350px");
     }
   }, []);
   return (
-    <div className="container-fluid" style={{
-      // height: tableHeight ? tableHeight : '200px',
-      height:  height,
-      overflowY: "scroll",
-      overflowX :"hidden"
-    }}>
+    <div
+      className="container-fluid"
+      style={{
+        // height: tableHeight ? tableHeight : '200px',
+        height: height,
+        overflowY: "scroll",
+        overflowX: "hidden",
+      }}
+    >
       <div className="row">
         <div className="col-3 d-flex flex-row justify-content-end m-1">
           <input
@@ -233,13 +235,13 @@ function AgentSupplies({tableHeight}) {
           <table className="table table-bordered table-striped">
             <thead>
               <tr>
-                <th style={{width:'10%'}}>Id</th>
-                <th style={{width:'15%'}}>Full Name</th>
-                <th style={{width:'15%'}}>Address</th>
-                <th style={{width:'15%'}}>Phone</th>
-                <th style={{width:'15%'}}>Email</th>
-                <th style={{width:'15%'}}>Notes</th>
-                <th style={{width:'10%'}}>Actions</th>
+                <th style={{ width: "10%" }}>Id</th>
+                <th style={{ width: "15%" }}>Full Name</th>
+                <th style={{ width: "15%" }}>Address</th>
+                <th style={{ width: "15%" }}>Phone</th>
+                <th style={{ width: "15%" }}>Email</th>
+                <th style={{ width: "15%" }}>Notes</th>
+                <th style={{ width: "10%" }}>Actions</th>
               </tr>
             </thead>
             <tbody>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { FaMinus, FaPlus, FaXmark, FaCheck } from "react-icons/fa6";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants";
 
 import Tooltip from "@mui/material/Tooltip";
 // Material UI for dialog box
@@ -18,7 +18,7 @@ import AuthContext from "../context/AuthProvider";
 import { FaEdit } from "react-icons/fa";
 import { getShifts } from "../api/shovelDetails";
 
-function Shift({tableHeight}) {
+function Shift({ tableHeight }) {
   const { auth } = useContext(AuthContext);
   const [data, setData] = useState([]);
   const [shiftName, setShiftName] = useState();
@@ -26,13 +26,13 @@ function Shift({tableHeight}) {
   const [StartTime, setStartTime] = useState();
   const [EndTime, setEndTime] = useState();
 
-  const showShiftData = async(key) =>{
-    const responsedata = await getShifts()
-    setData(responsedata,key)
-  }
+  const showShiftData = async (key) => {
+    const responsedata = await getShifts();
+    setData(responsedata, key);
+  };
   useEffect(() => {
-    showShiftData()
-  }, [])
+    showShiftData();
+  }, []);
 
   const handleShiftNameChange = (event) => {
     setShiftName(event.target.value);
@@ -154,8 +154,7 @@ function Shift({tableHeight}) {
           }
         );
       });
-  };
-
+  }
 
   function handleSave(event, Id) {
     const editedItem = data[editedIndex];
@@ -207,22 +206,24 @@ function Shift({tableHeight}) {
 
   const [height, setHeight] = useState();
   useEffect(() => {
-    console.log(tableHeight,"heightt")
-    if(tableHeight > '1' && tableHeight < '360'){
+    console.log(tableHeight, "heightt");
+    if (tableHeight > "1" && tableHeight < "360") {
       setHeight(tableHeight);
-    }
-    else{
-      setHeight('350px')
+    } else {
+      setHeight("350px");
     }
   }, []);
 
   return (
-    <div className="container-fluid p-2" style={{
-      // height: tableHeight ? tableHeight : '200px',
-      height:  height,
-      overflowY: "scroll",
-      overflowX :"hidden"
-    }}>
+    <div
+      className="container-fluid p-2"
+      style={{
+        // height: tableHeight ? tableHeight : '200px',
+        height: height,
+        overflowY: "scroll",
+        overflowX: "hidden",
+      }}
+    >
       <div className="col-3 d-flex flex-row justify-content-end m-1">
         <input
           type="text"

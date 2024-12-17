@@ -11,12 +11,12 @@ import {
 } from "@mui/material";
 import { FaCheck, FaMinus, FaPlus, FaXmark } from "react-icons/fa6";
 import axios from "axios";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants";
 import { toast } from "react-toastify";
 import AuthContext from "../context/AuthProvider";
 import { FaEdit } from "react-icons/fa";
 
-function SpareParts({tableHeight}) {
+function SpareParts({ tableHeight }) {
   const { auth } = useContext(AuthContext);
   const [sparePartsData, setSparePartsData] = useState([]);
   const [agentSuppliesData, setAgentSuppliesData] = useState([]);
@@ -128,14 +128,14 @@ function SpareParts({tableHeight}) {
   const [opendeletepopup, setOpenDelete] = useState(false);
   const [sparepartsId, setSparePartsId] = useState();
   const handleClickdeletepopup = (Id) => {
-    setSparePartsId(Id)
+    setSparePartsId(Id);
     setOpenDelete(true);
   };
   const handleDeleteClose = () => {
     setOpenDelete(false);
   };
 
-  const handleDeleteSpareparts = (e, ) => {
+  const handleDeleteSpareparts = (e) => {
     e.preventDefault();
     axios
       .delete(`${BASE_URL}/api/spareparts/${sparepartsId}`)
@@ -184,21 +184,23 @@ function SpareParts({tableHeight}) {
 
   const [height, setHeight] = useState();
   useEffect(() => {
-    console.log(tableHeight,"heightt")
-    if(tableHeight > '1' && tableHeight < '360'){
+    console.log(tableHeight, "heightt");
+    if (tableHeight > "1" && tableHeight < "360") {
       setHeight(tableHeight);
-    }
-    else{
-      setHeight('350px')
+    } else {
+      setHeight("350px");
     }
   }, []);
   return (
-    <div className="container-fluid" style={{
-      // height: tableHeight ? tableHeight : '200px',
-      height:  height,
-      overflowY: "scroll",
-      overflowX :"hidden"
-    }}>
+    <div
+      className="container-fluid"
+      style={{
+        // height: tableHeight ? tableHeight : '200px',
+        height: height,
+        overflowY: "scroll",
+        overflowX: "hidden",
+      }}
+    >
       <div className="row">
         <div className=" col-3 d-flex flex-row justify-content-end m-1">
           <input
@@ -223,14 +225,14 @@ function SpareParts({tableHeight}) {
           <table className="table table-bordered table-striped">
             <thead>
               <tr>
-                <th style={{width:'10%'}}>Id</th>
-                <th style={{width:'13%'}}>Code</th>
-                <th style={{width:'13%'}}>Name</th>
-                <th style={{width:'13%'}}>Equipment</th>
-                <th style={{width:'13%'}}>Amount</th>
-                <th style={{width:'13%'}}>Agent Id</th>
-                <th style={{width:'13%'}}>Photo</th>
-                <th style={{width:'10%'}}>Actions</th>
+                <th style={{ width: "10%" }}>Id</th>
+                <th style={{ width: "13%" }}>Code</th>
+                <th style={{ width: "13%" }}>Name</th>
+                <th style={{ width: "13%" }}>Equipment</th>
+                <th style={{ width: "13%" }}>Amount</th>
+                <th style={{ width: "13%" }}>Agent Id</th>
+                <th style={{ width: "13%" }}>Photo</th>
+                <th style={{ width: "10%" }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -389,9 +391,7 @@ function SpareParts({tableHeight}) {
                                 </DialogContent>
                                 <DialogActions>
                                   <Button
-                                    onClick={(e) =>
-                                      handleDeleteSpareparts(e)
-                                    }
+                                    onClick={(e) => handleDeleteSpareparts(e)}
                                   >
                                     Yes
                                   </Button>
@@ -584,9 +584,7 @@ function SpareParts({tableHeight}) {
                                 </DialogContent>
                                 <DialogActions>
                                   <Button
-                                    onClick={(e) =>
-                                      handleDeleteSpareparts(e)
-                                    }
+                                    onClick={(e) => handleDeleteSpareparts(e)}
                                   >
                                     Yes
                                   </Button>

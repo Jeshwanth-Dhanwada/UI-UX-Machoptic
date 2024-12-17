@@ -17,12 +17,12 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import { Button } from "react-bootstrap";
-import Button from '@mui/material/Button';
-import FormHelperText from '@mui/material/FormHelperText';
+import Button from "@mui/material/Button";
+import FormHelperText from "@mui/material/FormHelperText";
 // import Visibility from '@mui/material/Visibility';
 // import VisibilityOff from '@mui/material/VisibilityOff';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import {
   FormControl,
@@ -31,8 +31,8 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
-  Checkbox,
-} from '@mui/material';
+  useTheme,
+} from "@mui/material";
 
 function UserLogin() {
   const [username, setUsername] = useState("");
@@ -40,55 +40,12 @@ function UserLogin() {
   const [showPassword, setShowPassword] = React.useState(false);
   const navigate = useNavigate();
   const { auth, setAuth } = useContext(AuthContext);
-  
+
   const [employeedata, setemployeedata] = useState([]);
   const [justifyActive, setJustifyActive] = useState("tab1");
-  const [name, setName] = useState('');
-  const [registerUsername, setRegisterUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [registerPassword, setRegisterPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [name, setName] = useState("");
 
-  const handleName = (event) => {
-    setName(event.target.value);
-  };
-
-  const handleRegisterUsername = (event) => {
-    setRegisterUsername(event.target.value);
-  };
-
-  const handleEmail = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handleRegisterPassword = (event) => {
-    setRegisterPassword(event.target.value);
-  };
-
-  const handleConfirmPassword = (event) => {
-    setConfirmPassword(event.target.value);
-  };
-
-  const handleClickShowRegisterPassword = () => {
-    setShowRegisterPassword(!showRegisterPassword);
-  };
-
-  const handleMouseDownRegisterPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleClickShowConfirmPassword = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
-
-  const handleMouseDownConfirmPassword = (event) => {
-    event.preventDefault();
-  };
-
-  
-  console.log(auth,"loginissue")
+  console.log(auth, "loginissue");
   useEffect(() => {
     showEmployees();
     if (auth?.username) {
@@ -124,11 +81,18 @@ function UserLogin() {
       const response = await axios.post(`${BASE_URL}/api/auth`, data, {
         withCredentials: true,
       });
-      const { accessToken, designation, empId, empTypeId, branchId } = response?.data;
-      setAuth({ username, accessToken, designation, empId, empTypeId,branchId});
+      const { accessToken, designation, empId, empTypeId, branchId } =
+        response?.data;
+      setAuth({
+        username,
+        accessToken,
+        designation,
+        empId,
+        empTypeId,
+        branchId,
+      });
       navigate("/administration");
-      console.log(response,"loginissue");
-      
+      console.log(response, "loginissue");
     } catch (error) {
       toast.error(<span>{error.response.data.message}</span>);
       console.log("Error Logging in", error);
@@ -144,6 +108,11 @@ function UserLogin() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const theme = useTheme();
+
+  console.log("Color Changed: ", theme.palette.primary);
+
   return (
     <div className="container-fluid h-100">
       <div className="row justify-content-center h-100 mt-5">
@@ -169,23 +138,10 @@ function UserLogin() {
                     Login
                   </MDBTabsLink>
                 </MDBTabsItem>
-                {/* <MDBTabsItem>
-                  <MDBTabsLink
-                    onClick={() => handleJustifyClick("tab2")}
-                    active={justifyActive === "tab2"}
-                    style={
-                      justifyActive === "tab2"
-                        ? { backgroundColor: "#034661", color: "#ffffff" }
-                        : { backgroundColor: "#ffffff", color: "#034661" }
-                    }
-                  >
-                    Register
-                  </MDBTabsLink>
-                </MDBTabsItem> */}
               </MDBTabs>
 
               <MDBTabsContent>
-              {justifyActive === "tab1" && (
+                {justifyActive === "tab1" && (
                   <div>
                     <div className="form-group mb-4 text-center">
                       <FormControl
@@ -232,38 +188,28 @@ function UserLogin() {
                         />
                       </FormControl>
                     </div>
-                    {/* <div className="d-flex flex-row justify-content-between">
-                      <div className="mb-4">
-                        <Checkbox />
-                        <label className="form-label" htmlFor="remember">
-                          Remember me
-                        </label>
-                      </div>
-                      <div className="mt-2">
-                        <a href="#">Forgot Password?</a>
-                      </div>
-                    </div> */}
                   </div>
                 )}
               </MDBTabsContent>
               <div className="text-center ">
                 <Button variant="outlined" color="error" className="mr-2">
                   Cancel
-                </Button> &nbsp;&nbsp;
-                <Button variant="outlined" color="success"
+                </Button>{" "}
+                &nbsp;&nbsp;
+                <Button
+                  variant="outlined"
+                  color="success"
                   onClick={handleLogin}
                 >
                   {justifyActive === "tab1" ? "LOG IN" : "Register"}
                 </Button>
               </div>
-
             </div>
           </div>
         </div>
         <ToastContainer />
       </div>
     </div>
-
   );
 }
 

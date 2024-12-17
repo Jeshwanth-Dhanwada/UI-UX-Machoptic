@@ -11,7 +11,14 @@ import React, {
 import EdgeEditPopup from "./EdgeEditor.js";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { Backdrop, Card, Slider } from "@mui/material";
+import {
+  Backdrop,
+  Card,
+  CardContent,
+  IconButton,
+  Slider,
+  useTheme,
+} from "@mui/material";
 import { BsPlusLg } from "react-icons/bs";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
@@ -34,7 +41,7 @@ import {
 } from "../api/shovelDetails.js";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-import { NODE_WIDTH, NODE_HEIGHT } from "../constants/chartlConstants.js";
+import { NODE_WIDTH, NODE_HEIGHT } from "../utils/chartlConstants.js";
 import { ReactFlowProvider } from "react-flow-renderer";
 import iconNode from "./nodeTypes/iconNode.js";
 import graphNode from "./nodeTypes/graphNode.js";
@@ -54,7 +61,7 @@ import ReactFlow, {
   MarkerType,
 } from "reactflow";
 import "./sidebar.css";
-import { BASE_URL } from "../constants/apiConstants.js";
+import { BASE_URL } from "../utils/apiConstants.js";
 import BasicTabs from "./tabs.js";
 import RightOperationTabPanel from "./rigtPanel/rightOperationPanel.js";
 import "reactflow/dist/style.css";
@@ -88,8 +95,8 @@ import NodeTypeModal from "./nodeTypeModal.js";
 import Modal from "@mui/material/Modal";
 import { FaRegRectangleXmark } from "react-icons/fa6";
 
-import Paper from '@mui/material/Paper';
-import Draggable from 'react-draggable';
+import Paper from "@mui/material/Paper";
+import Draggable from "react-draggable";
 import FullScreenModal from "./FullScreenModal.js";
 
 const style = {
@@ -223,6 +230,7 @@ const AdministrationShowRoutes = ({
   sendtoRoutes,
   setSelectedId,
 }) => {
+  const theme = useTheme();
   const { fitView, addNodes } = useReactFlow();
   const [selectedNodeForEdit, setSelectedNodeForEdit] = useState(null);
   const [showGraph, setshowGraph] = useState(false);
@@ -305,11 +313,10 @@ const AdministrationShowRoutes = ({
       .get(apiUrl)
       .then((response) => {
         setData(response.data);
-        let filter = []
-        filter = response.data
-                  .filter((item)=> (item.nodeType === 'Machine' 
-                                    || item.nodeType === 'Material'
-                                  ))
+        let filter = [];
+        filter = response.data.filter(
+          (item) => item.nodeType === "Machine" || item.nodeType === "Material"
+        );
         let x = [];
         for (let index = 0; index < filter.length; index++) {
           const data = filter[index];
@@ -359,19 +366,18 @@ const AdministrationShowRoutes = ({
       });
   }, [setNodes]);
 
-  function getNodedata(){
+  function getNodedata() {
     const apiUrl = `${BASE_URL}/api/nodeMaster`;
     axios
       .get(apiUrl)
       .then((response) => {
         setData(response.data);
 
-        let filter = []
-        filter = response.data
-                  .filter((item)=> (item.nodeType === 'Machine' 
-                                    || item.nodeType === 'Material'
-                                  ))
-        
+        let filter = [];
+        filter = response.data.filter(
+          (item) => item.nodeType === "Machine" || item.nodeType === "Material"
+        );
+
         let x = [];
         for (let index = 0; index < filter.length; index++) {
           const data = filter[index];
@@ -433,49 +439,6 @@ const AdministrationShowRoutes = ({
     setShowEdges(true);
     setNodeShowPopup(false);
   };
-
-  // const getsourcenodeId = (params) => {
-  //   const nodedata = data.filter(item => item.id === params.source);
-  //   return nodedata[0].nodeId
-  // }
-
-  // const gettargetnodeId = (params) => {
-  //   const edgedata = data.filter(item => item.id === params.target);
-  //   return edgedata[0].nodeId
-  // }
-  // //Add Edge connection logic ----------------------
-
-  // const onConnect = useCallback(
-  //   (params) => {
-  //     console.log(params,"params")
-  //     if (route && route.routeid) {
-  //       const newEdge = {
-  //         ...params,
-  //         id: uuidv4(),
-  //         edgeId: undefined,
-  //         sourceNodeId: getsourcenodeId(params),
-  //         targetNodeId: gettargetnodeId(params),
-  //         routeId: route.routeid,
-  //         type: "smoothstep",
-  //         label: "",
-  //         markerEnd: {
-  //           type: MarkerType.ArrowClosed,
-  //           width: 25,
-  //           height: 25,
-  //           color: "#000",
-  //           arrow: true,
-  //         },
-  //         style: { strokeWidth: 1, stroke: "#CECECF" },
-  //         animated: false,
-  //       };
-  //       setEdges((edges) => addEdge(newEdge, edges));
-  //     } else {
-  //       // Handle the case when route.id is not present (e.g., show an error message)
-  //       console.log("Cannot connect edges: route.id is not present.");
-  //     }
-  //   },
-  //   [route, setEdges]
-  // );
 
   // Add Node --------------------------------------
 
@@ -923,14 +886,6 @@ const AdministrationShowRoutes = ({
     [addNodes, computeNodeList, nodes, setEdges]
   );
 
-  // useEffect(() => {
-  //   // Call CreateNewNode when nodeType is set
-  //   if ((nodeType === 'Machine' || nodeType === 'Material') && !triggered) {
-  //     CreateNewNode();
-  //     setTriggered(true); // Prevent it from triggering again
-  //   }
-  // },[nodeType, triggered])
-
   // Reset triggered flag if needed elsewhere
   const resetTrigger = () => {
     setTriggered(false);
@@ -970,226 +925,102 @@ const AdministrationShowRoutes = ({
     setEdges(filteredEdges);
   }, [edges, setEdges]);
 
-  // const deletenodes = useCallback(() => {
-  //   // setConsecutiveAddCounter(0);
-  //   const selectedNode = nodes.find((node) => node.selected);
-  //   // const selectedEdge = edges.find((edge) => edge.selected)
-  //   if (!selectedNode ) {
-  //     // Display an alert or notification to the user
-  //     alert("Please select a Node to delete.");
-  //     return;
-  //   }
-
-  //   // Make an Axios DELETE request to delete the selected node by its ID
-  //   axios
-  //     .delete(`${BASE_URL}/api/nodeMaster/${selectedNode.nodeId}`)
-  //     .then((response) => {
-  //       console.log("Node deleted successfully", response.data);
-  //       const apiUrl = `${BASE_URL}/api/nodeMaster`;
-
-  //         axios
-  //           .get(apiUrl)
-  //           .then((response) => {
-  //             setData(response.data);
-  //             let x = [];
-  //             for (let index = 0; index < response.data.length; index++) {
-  //               const data = response.data[index];
-  //               x.push({
-  //                 nodeId: data.nodeId,
-  //                 id: data.id,
-  //                 nodeType:data.nodeType,
-  //                 nodeCategory: data.nodeCategory,
-  //                 data: { label: data.nodeName },
-  //                 sourcePosition: data.sourcePosition,
-  //                 targetPosition: data.targetPosition,
-  //                 position: { x: data.xPosition, y: data.yPosition },
-  //                 style: {
-  //                   background: data.fillColor, // Set background color
-  //                   color: "#000", // Set text color
-  //                   borderColor: data.borderColor,
-  //                   borderStyle: data.borderStyle,
-  //                   borderWidth: data.borderWidth,
-  //                   fontSize: data.FontSize, // Set the font size
-  //                   fontStyle: data.FontStyle, // Set the font style
-  //                   width: data.width,
-  //                   height: data.height,
-  //                   borderRadius: data.borderRadius,
-  //                   display: data.borderRadius ? 'flex' : '',
-  //                   alignItems: 'center',
-  //                   fontColor:data.FontColor
-  //                 },
-  //               });
-  //             }
-  //             setNodes(x);
-  //           })
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error deleting node:", error);
-  //     });
-
-  //   const selectedNodeIds = new Set();
-  //   const selectedEdgeIds = new Set();
-  //   nodes.forEach((node) => {
-  //     if (node.selected) {
-  //       selectedNodeIds.add(node.id);
-  //       // Collect descendant nodes by traversing edges
-  //       edges.forEach((edge) => {
-  //         if (edge.source === node.id) {
-  //           selectedNodeIds.add(edge.target);
-  //         }
-  //       });
-  //     }
-  //   });
-
-  //   // Collect edges connected to the selected nodes
-  //   edges.forEach((edge) => {
-  //     if (
-  //       selectedNodeIds.has(edge.source) ||
-  //       selectedNodeIds.has(edge.target)
-
-  //     ) {
-  //       selectedEdgeIds.add(edge.id);
-  //     }
-  //   });
-
-  //   const filteredNodes = nodes.filter((node) => !selectedNodeIds.has(node.id));
-  //   console.log(filteredNodes);
-  //   const filteredEdges = edges.filter((edge) => !selectedEdgeIds.has(edge.id));
-
-  //   setNodes(filteredNodes);
-  //   setEdges(filteredEdges);
-  // }, [nodes, edges]);
-
-  const DeleteChildNodes = (Id,nodeId) => {
-    const getId = Nodemasterdata
-                          .filter((item) => String(item?.parentNode) === String(Id))
-                          .map((item) => item.nodeId);
+  const DeleteChildNodes = (Id, nodeId) => {
+    const getId = Nodemasterdata.filter(
+      (item) => String(item?.parentNode) === String(Id)
+    ).map((item) => item.nodeId);
     const getEmpdata = empAllocation
-                          .filter((item)=>parseInt(item.node.nodeId) === parseInt(nodeId))
-                          .map((item1)=>item1.empnodemapId
-                        );
+      .filter((item) => parseInt(item.node.nodeId) === parseInt(nodeId))
+      .map((item1) => item1.empnodemapId);
     const getDevicedata = deviceAllocation
-                          .filter((item)=>parseInt(item.nodeId) === parseInt(nodeId))
-                          .map((item1)=>item1.Id
-                        );
+      .filter((item) => parseInt(item.nodeId) === parseInt(nodeId))
+      .map((item1) => item1.Id);
 
-    if(getId.length>0){
-      try{
+    if (getId.length > 0) {
+      try {
         console.log(getId, "selectedNode");
-        getId.forEach(element => {
+        getId.forEach((element) => {
           axios
-          .delete(`${BASE_URL}/api/nodeMaster/${element}`)
-          .then((response) => {
-            console.log("Node deleted successfully", response.data);
-            getNodedata()
-          })
-          .catch((error) => {
-            console.error("Error deleting node:", error);
-          });
+            .delete(`${BASE_URL}/api/nodeMaster/${element}`)
+            .then((response) => {
+              console.log("Node deleted successfully", response.data);
+              getNodedata();
+            })
+            .catch((error) => {
+              console.error("Error deleting node:", error);
+            });
         });
-      }
-      catch{
-        console.log("Error In deleting child nodes")
-      }
-    }
-    if(getEmpdata.length>0){
-      try{
-        getEmpdata.forEach((element)=>{
-          axios
-          .delete(`${BASE_URL}/api/employeeNodeMapping/${element}`)
-          .then((response) => {
-            console.log("Node deleted successfully", response.data);
-            getNodedata()
-          })
-          .catch((error) => {
-            console.error("Error deleting node:", error);
-          });
-        })
-      }
-      catch{
-        console.log("Error while deleting the Employee node")
+      } catch {
+        console.log("Error In deleting child nodes");
       }
     }
-    if(getDevicedata.length>0){
-      try{
-        getDevicedata.forEach((element)=>{
+    if (getEmpdata.length > 0) {
+      try {
+        getEmpdata.forEach((element) => {
           axios
-          .delete(`${BASE_URL}/api/deviceMapping/${element}`)
-          .then((response) => {
-            console.log("Node deleted successfully", response.data);
-            getNodedata()
-          })
-          .catch((error) => {
-            console.error("Error deleting node:", error);
-          });
-        })
+            .delete(`${BASE_URL}/api/employeeNodeMapping/${element}`)
+            .then((response) => {
+              console.log("Node deleted successfully", response.data);
+              getNodedata();
+            })
+            .catch((error) => {
+              console.error("Error deleting node:", error);
+            });
+        });
+      } catch {
+        console.log("Error while deleting the Employee node");
       }
-      catch {
-        console.log("Error while deleting the Device Mapping")
+    }
+    if (getDevicedata.length > 0) {
+      try {
+        getDevicedata.forEach((element) => {
+          axios
+            .delete(`${BASE_URL}/api/deviceMapping/${element}`)
+            .then((response) => {
+              console.log("Node deleted successfully", response.data);
+              getNodedata();
+            })
+            .catch((error) => {
+              console.error("Error deleting node:", error);
+            });
+        });
+      } catch {
+        console.log("Error while deleting the Device Mapping");
       }
     }
   };
 
-  const DeleteCorrespondingEdges = (id) =>{
+  const DeleteCorrespondingEdges = (id) => {
     // Collect the IDs of edges connected to the deleted node
-          const edgeIdsToDelete = edges
-            .filter(
-              (edge) =>
-                edge?.source === id ||
-                edge?.target === id
-            )
-            .map((edge) => edge?.edgeId);
+    const edgeIdsToDelete = edges
+      .filter((edge) => edge?.source === id || edge?.target === id)
+      .map((edge) => edge?.edgeId);
 
-          // Make DELETE requests to delete the connected edges
-          edgeIdsToDelete.forEach((edgeId) => {
-            axios
-              .delete(`${BASE_URL}/api/edgeMaster/${edgeId}`)
-              .then((response) => {
-                console.log("Edge deleted successfully", response.data);
-              })
-              .catch((error) => {
-                console.error("Error deleting edge:", error);
-              });
-          });
+    // Make DELETE requests to delete the connected edges
+    edgeIdsToDelete.forEach((edgeId) => {
+      axios
+        .delete(`${BASE_URL}/api/edgeMaster/${edgeId}`)
+        .then((response) => {
+          console.log("Edge deleted successfully", response.data);
+        })
+        .catch((error) => {
+          console.error("Error deleting edge:", error);
+        });
+    });
 
-          // Continue with updating the nodes and edges in your state as you did in your original code.
-          // const selectedNodeIds = new Set();
-          const selectedEdgeIds = new Set();
-          // nodes.forEach((node) => {
-          //   if (node.selected) {
-          //     selectedNodeIds.add(node.id);
-          //     // Collect descendant nodes by traversing edges
-          //     edges.forEach((edge) => {
-          //       if (edge.source === node.id) {
-          //         selectedNodeIds.add(edge.target);
-          //       }
-          //     });
-          //   }
-          // });
+    // Continue with updating the nodes and edges in your state as you did in your original code.
+    // const selectedNodeIds = new Set();
+    const selectedEdgeIds = new Set();
+    const filteredEdges = edges.filter(
+      (edge) => !selectedEdgeIds.has(edge?.id)
+    );
 
-          // Collect edges connected to the selected nodes
-          // edges.forEach((edge) => {
-          //   if (
-          //     selectedNodeIds.has(edge?.source) ||
-          //     selectedNodeIds.has(edge?.target)
-          //   ) {
-          //     selectedEdgeIds.add(edge?.id);
-          //   }
-          // });
-
-          // const filteredNodes = nodes.filter(
-          //   (node) => !selectedNodeIds.has(node?.id)
-          // );
-          const filteredEdges = edges.filter(
-            (edge) => !selectedEdgeIds.has(edge?.id)
-          );
-
-          // setNodes(filteredNodes);
-          setEdges(filteredEdges);
-  }
+    // setNodes(filteredNodes);
+    setEdges(filteredEdges);
+  };
 
   const deletenodes = useCallback(() => {
-    setSelectedNodeId("")
+    setSelectedNodeId("");
     const selectedNode = nodes.find((node) => node.selected);
     if (!selectedNode) {
       alert("Please select a Node to delete.");
@@ -1200,27 +1031,29 @@ const AdministrationShowRoutes = ({
       ...prevNodes.filter((n) => n?.id !== selectedNode?.nodeId),
     ]);
 
-    if (selectedNode?.nodeId === "undefined" && selectedNode?.id === "undefined") {
+    if (
+      selectedNode?.nodeId === "undefined" &&
+      selectedNode?.id === "undefined"
+    ) {
       console.error("Error: No edgeid provided");
       // return Promise.reject(new Error("No edgeid provided"));
     } else {
-      try{
-        if(selectedNode.id && selectedNode.nodeId){
-          DeleteChildNodes(selectedNode?.id,selectedNode.nodeId);
+      try {
+        if (selectedNode.id && selectedNode.nodeId) {
+          DeleteChildNodes(selectedNode?.id, selectedNode.nodeId);
         }
+      } catch {
+        console.log("No Id found");
       }
-      catch{
-        console.log("No Id found")
-      }
-      
-      DeleteCorrespondingEdges(selectedNode?.id)
+
+      DeleteCorrespondingEdges(selectedNode?.id);
       // Make an Axios DELETE request to delete the selected node by its ID
       axios
         .delete(`${BASE_URL}/api/nodeMaster/${selectedNode.nodeId}`)
         .then((response) => {
-          getNodedata()
+          getNodedata();
           console.log("Node deleted successfully", response.data);
-          setDeletePopup(false)
+          setDeletePopup(false);
           toast.error(
             <span>
               <strong>Deleted</strong> Successfully.
@@ -1237,25 +1070,24 @@ const AdministrationShowRoutes = ({
     }
   }, [nodes, edges]);
 
-  const [open,setDeletePopup] = useState(false)
-  const [openUnselected,setOpenUnselected] = useState(false)
+  const [open, setDeletePopup] = useState(false);
+  const [openUnselected, setOpenUnselected] = useState(false);
   const handleCloseDeletPopup = () => {
-    setDeletePopup(false)
-  }
+    setDeletePopup(false);
+  };
   const handleCloseUnselectedPopup = () => {
-    setOpenUnselected(false)
-  }
+    setOpenUnselected(false);
+  };
   const HandleDeleteNodes = () => {
     const selectedNode = nodes.find((node) => node.selected);
     const selectedEdge = edges.find((edge) => edge.selected);
-    if(selectedNode || selectedEdge){
-      setDeletePopup(true)
+    if (selectedNode || selectedEdge) {
+      setDeletePopup(true);
+    } else {
+      setOpenUnselected(true);
     }
-    else{
-      setOpenUnselected(true)
-    }
-  }
-  function deleteSelectedElements() {    
+  };
+  function deleteSelectedElements() {
     const selectedEdge = edges.find((edge) => edge.selected);
     if (selectedEdge) {
       deleteEdges();
@@ -1263,46 +1095,6 @@ const AdministrationShowRoutes = ({
       deletenodes();
     }
   }
-
-  // const deleteSelectedElements = useCallback(() => {
-  //   setConsecutiveAddCounter(0);
-  //   const selectedNode = nodes.find((node) => node.selected);
-  //   if (!selectedNode) {
-  //     // Display an alert or notification to the user
-  //     alert("Please select a node to delete.");
-  //     return;
-  //   }
-  //   const selectedNodeIds = new Set();
-  //   const selectedEdgeIds = new Set();
-  //   nodes.forEach((node) => {
-  //     if (node.selected) {
-  //       selectedNodeIds.add(node.id);
-  //       // Collect descendant nodes by traversing edges
-  //       edges.forEach((edge) => {
-  //         if (edge.source === node.id) {
-  //           selectedNodeIds.add(edge.target);
-  //         }
-  //       });
-  //     }
-  //   });
-
-  //   // Collect edges connected to the selected nodes
-  //   edges.forEach((edge) => {
-  //     if (
-  //       selectedNodeIds.has(edge.source) ||
-  //       selectedNodeIds.has(edge.target)
-  //     ) {
-  //       selectedEdgeIds.add(edge.id);
-  //     }
-  //   });
-
-  //   const filteredNodes = nodes.filter((node) => !selectedNodeIds.has(node.id));
-  //   console.log(filteredNodes);
-  //   const filteredEdges = edges.filter((edge) => !selectedEdgeIds.has(edge.id));
-
-  //   setNodes(filteredNodes);
-  //   setEdges(filteredEdges);
-  // }, [nodes, edges, setNodes, setEdges]);
 
   const [layoutDirection, setLayoutDirection] = useState("TB"); // Default to "TB" (top-bottom) layout
   const onLayout = useCallback(
@@ -1489,11 +1281,11 @@ const AdministrationShowRoutes = ({
             .get(apiUrl)
             .then((response) => {
               setData(response.data);
-              let filter = []
-              filter = response.data
-                        .filter((item)=> (item.nodeType === 'Machine' 
-                                          || item.nodeType === 'Material'
-                                        ))
+              let filter = [];
+              filter = response.data.filter(
+                (item) =>
+                  item.nodeType === "Machine" || item.nodeType === "Material"
+              );
               let x = [];
               for (let index = 0; index < filter.length; index++) {
                 const data = filter[index];
@@ -1557,40 +1349,7 @@ const AdministrationShowRoutes = ({
           "Content-Type": "application/json", // Set the content type to JSON
         },
       })
-      .then((response) => {
-        // if(response.status === 201){
-        // const apiUrl = `${BASE_URL}/api/edgeMaster}`;
-        // axios.get(apiUrl)
-        //   .then((response) => {
-        //     const dataArray = response.data.map((data) => ({
-        //       id: data.id,
-        //       edgeId: data.edgeId,
-        //       routeid:data.routeId,
-        //       source: data.sourceId,
-        //       target: data.targetId,
-        //       type: data.edgeStyle,
-        //       animated: data.animation,
-        //       sourceNodeId:data.sourceNodeId,
-        //       targetNodeId:data.targetNodeId,
-        //       label: data.label,
-        //       style: { strokeWidth: data.edgeThickness, stroke: data.edgeColor },
-        //       markerEnd: {
-        //         type: MarkerType.ArrowClosed,
-        //         width: 15,
-        //         height: 15,
-        //         color: "#000",
-        //         arrow: data.arrow,
-        //       },
-        //     }));
-        //     setEdges(dataArray)
-        //     console.log(dataArray)
-        //     console.log("Incoming")
-        //   })
-        //     .catch((error) => {
-        //       console.error("Error fetching data:", error);
-        //     });
-        //   }
-      })
+      .then((response) => {})
       .catch((error) => {
         console.error("Error saving data:", error);
       });
@@ -1850,23 +1609,17 @@ const AdministrationShowRoutes = ({
     []
   ); // New state for selected node ID
 
-  const [FullNodeDetails,setFullNodeDetails] = useState(false)
-  const [FullNodeData,setFullNodeData] = useState()
+  const [FullNodeDetails, setFullNodeDetails] = useState(false);
+  const [FullNodeData, setFullNodeData] = useState();
   const onNodeContextMenu = (event, node) => {
     event.preventDefault(); // Prevent the default context menu
-    setFullNodeData(node)
-    // setSelectedNodes(node);
-    // setNodeShowPopup(true);
-    // setShowPopup(false);
-    // setShowRoutePopup(true);
-    // setSelectedNodeId(node.id);
-    // setselectedNodeIdtoNodeGrpah(node)
-    setFullNodeDetails(true)
+    setFullNodeData(node);
+    setFullNodeDetails(true);
   };
 
   const HandleCloseFullScreen = () => {
-    setFullNodeDetails(false)
-  }
+    setFullNodeDetails(false);
+  };
 
   const onNodeClick = useCallback(
     (event, node) => {
@@ -1882,21 +1635,6 @@ const AdministrationShowRoutes = ({
     [selectedNodeId, setNodeShowPopup, setSelectedNodes, setShowPopup]
   );
 
-  // const handleWheel = useCallback((event) => {
-  //   console.log("Incoming 2704")
-  //   // Check if shift key is pressed to allow zooming
-  //     event.preventDefault();
-  //     const zoomSpeed = 0.1;
-  //     const { deltaX, deltaY } = event;
-
-  //     if (Math.abs(deltaX) > Math.abs(deltaY)) {
-  //       // Horizontal scroll
-  //       flowRef.current.zoom(flowRef.current.getZoom() + (deltaX > 0 ? zoomSpeed : -zoomSpeed));
-  //     } else {
-  //       // Vertical scroll - prevent zooming
-  //       flowRef.current.zoom(flowRef.current.getZoom());
-  //     }
-  // },[])
   const getNodeStyle = useCallback(
     (node) => {
       // Dynamically update the node's style based on whether it's selected
@@ -1941,10 +1679,6 @@ const AdministrationShowRoutes = ({
   // Route popup ----------
   const [showRoutePopup, setShowRoutePopup] = useState(true);
 
-  const handleRouteClick = () => {
-    // setShowRoutePopup(true);
-  };
-
   const onCloseRoute = () => {
     setShowRoutePopup(true);
     setNodeShowPopup(false);
@@ -1957,15 +1691,6 @@ const AdministrationShowRoutes = ({
   // to set edges edges to be shown are not ---------
 
   const [showEdges, setShowEdges] = useState(route); // State to control edges visibility
-
-  // Function to toggle edges visibility
-  const toggleEdgesVisibility = () => {
-    setShowEdges(!showEdges);
-    // setRadioChecked(!radioChecked);
-  };
-  // const toggleEMployeeMapping = () => {
-  //   setShowEdges(!showEdges)
-  // }
 
   // Fetching Employee the data from the database
 
@@ -1987,15 +1712,7 @@ const AdministrationShowRoutes = ({
 
   const reactFlowWrapper = useRef(null);
   const [PopupEmp, setEmpPopup] = useState(false);
-  // const dragDropped = (event) => {
-  //   event.preventDefault(); // Allows the drop
-  //   let dataTransferedData = event.dataTransfer.getData('empId'); // Use the same data type as set in dragStarted
-  //   let dataTransfered = event.dataTransfer.getData('empName'); // Use the same data type as set in dragStarted
-  //   setDroppedData({ empId: dataTransferedData, empName: dataTransfered })
-  //   // Show the popup after setting the dropped data
-  //   // setEmpPopup(true)
 
-  // }
   const [shift, setShift] = useState(""); // State for the selected Shift
   const [startDate, setStartDate] = useState(""); // State for the Start Date
 
@@ -2040,25 +1757,6 @@ const AdministrationShowRoutes = ({
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  // useEffect  = (() => {
-  //   switch (bottomtosidepanel){
-  //     case "Edges":
-  //       setValue(0); // Staff Mapping tab
-  //       break;
-  //     case "Staff Mapping":
-  //       setValue(1); // Device Mapping tab
-  //       break;
-  //     case "Raw Material":
-  //       setValue(2); // Device Mapping tab
-  //       break;
-  //     case "Device Mapping":
-  //       setValue(3); // Device Mapping tab
-  //       break;
-  //     default:
-  //     setValue(0); // Default to Nodes tab
-  //   }
-  // }, [bottomtosidepanel]);
 
   useEffect(() => {
     switch (bottomtosidepanel) {
@@ -2228,11 +1926,11 @@ const AdministrationShowRoutes = ({
           .get(apiUrl)
           .then((response) => {
             setData(response.data);
-            let filter = []
-              filter = response.data
-                        .filter((item)=> (item.nodeType === 'Machine' 
-                                          || item.nodeType === 'Material'
-                                        ))
+            let filter = [];
+            filter = response.data.filter(
+              (item) =>
+                item.nodeType === "Machine" || item.nodeType === "Material"
+            );
             let x = [];
             for (let index = 0; index < filter.length; index++) {
               const data = filter[index];
@@ -2729,77 +2427,6 @@ const AdministrationShowRoutes = ({
         setDeviceMapping([...DeviceMapping, deviceNode]);
         setDevicenode(deviceNode);
       }
-      // if (empData.jobId) {
-      //   console.log(empData);
-      //   const jobNode = {
-      //     parenId: ParentnodeData.id,
-      //     id: uuidv4(),
-      //     position: { x: 108, y: -40 },
-      //     type: "iconNode",
-      //     parentNode: ParentnodeData.id,
-      //     nodedetails: ParentnodeData,
-      //     extent: "parent",
-      //     sourcePosition: "right",
-      //     targetPosition: "left",
-      //     nodeCategory: "",
-      //     unit1Measurable: "",
-      //     unit2Mandatory: "",
-      //     itemDescription: "",
-      //     nodeImage: "",
-      //     percentage_rejects: '',
-      //     nodeType: "job",
-      //     MachineType: "",
-      //     height: 20,
-      //     width: 20,
-      //     iconId: empData.jobId.toString(),
-      //     style: {
-      //       zIndex: 1001,
-      //       width: "10",
-      //       height: "10",
-      //       background: "",
-      //       color: "",
-      //       borderColor: "",
-      //       borderStyle: "",
-      //       borderWidth: "",
-      //       fontSize: "",
-      //       fontStyle: "",
-      //       borderRadius: "",
-      //       display: "",
-      //       alignItems: "",
-      //       fontColor: ""
-      //     },
-      //     data: { label: getJobNameById(empData.jobId), onIconDoubbleClick: onIconDoubbleClick },
-      //   };
-      //   console.log(jobNode, "JobDetails");
-      //   // jobNode.position.x = ParentnodeData.position.x+NODE_WIDTH+22;
-      //   // jobNode.position.y = ParentnodeData.position.y + NODE_HEIGHT-50;
-      //   setOadetails((jobs) => jobs.filter(a => a.jobId !== empData.jobId));
-      //   setNodes((es) => es.concat(jobNode));
-      //   setJobMapping([...JobMapping, jobNode])
-      // }
-      // if(empData.IT_CODE){
-      //   console.log(empData);
-      //   const deviceNode = {
-      //     parenId:ParentnodeData.id,
-      //     id: empData.IT_CODE + "",
-      //     position: {},
-      //     type:"iconNode",
-      //     sourcePosition: "right",
-      //     targetPosition: "left",
-      //     height:20,
-      //     width:20,
-      //     style:{
-      //       zIndex:1001,
-      //     },
-      //     data: { label: empData.IT_NAME, onIconDoubbleClick: onIconDoubbleClick },
-      //   };
-      //   console.log(deviceNode,"JobDetails");
-      //   console.log(nodes, "JobDetails");
-      //   deviceNode.position.x = ParentnodeData.position.x+NODE_WIDTH-110;
-      //   deviceNode.position.y = ParentnodeData.position.y + NODE_HEIGHT-10;
-      //   setOadetails((jobs) => jobs.filter(a => a.jobId !== empData.jobId));
-      //   setNodes((es) => es.concat(deviceNode));
-      // }
     }
   };
 
@@ -3497,16 +3124,6 @@ const AdministrationShowRoutes = ({
     // }
   };
 
-  // console.log(sendtoRoutess,"sendtoRoutess")
-  // console.log(sendtoRoutes,"sendtoRoutess")
-  // useEffect(() => {
-  //   if (sendtoRoutes) {
-  //     setNodes([...nodes, sendtoRoutes]);
-  //     // console.log(nodes)
-  //     // console.log(sendtoRoutes)
-  //   }
-  // }, [nodes,sendtoRoutes]);
-
   useEffect(() => {
     if (sendtoRoutes) {
       //   console.log("Incoming")
@@ -3516,22 +3133,6 @@ const AdministrationShowRoutes = ({
     }
   }, [sendtoRoutes]);
 
-  // useEffect(() => {
-  //   if (sendtoRoutes) {
-  //     const { x, y } = sendtoRoutes;
-  //     // Check if x and y are defined
-  //     if (x !=== undefined && y !=== undefined) {
-  //       // Add sendtoRoutes to nodes if x and y are defined
-  //       setNodes((nds) => nds.concat(sendtoRoutes));
-  //     }
-  //   }
-  // }, [sendtoRoutes, setNodes]); // Only run the effect when sendtoRoutes changes
-  // Define your second export function
-
-  // const handleLinkClickName = (item) => {
-  //   setActive(item);
-  //   // handleLinkClick(item)
-  // }
   const [isExpandedFull, setIsExpandedFull] = React.useState(false);
   const [size, setSize] = useState();
   const HandleIcon = (item) => {
@@ -3601,7 +3202,6 @@ const AdministrationShowRoutes = ({
 
   window.addEventListener("error", observerErrorHandler);
 
-
   return (
     <div style={{ display: "flex" }} ref={inputRef}>
       <div
@@ -3629,7 +3229,10 @@ const AdministrationShowRoutes = ({
               // zoomOnPinch={false}
               // panOnScrollMode={"horizontal"}
               ref={flowRef}
-              nodesDraggable={selectedMenuItem === "Configuration" || selectedMenuItem === "Administration"} // Disable dragging for nodes
+              nodesDraggable={
+                selectedMenuItem === "Configuration" ||
+                selectedMenuItem === "Administration"
+              } // Disable dragging for nodes
               nodes={nodes.map((node) => ({
                 ...node,
                 style: getNodeStyle(node), // Apply the updated style
@@ -4066,60 +3669,17 @@ const AdministrationShowRoutes = ({
                 </div>
               )}
 
-              {/* {selectedMenuItem === "Operations"  &&
-                <RightTabPanel 
-                  nodefromshowRoutes={selectedNodeId} 
-                  setJobIdSidetoBottom={HandleJobfromOperations} />
-              } */}
-              {/* {selectedMenuItem === "Planning" && selectedMenuItem !== "Operations" &&
-                <RightOperationTabPanel
-                  sendtoPlanningtab={HandlesendtoPlanningtab}
-                  toRightOperationTabPanel={toRightOperationTabPanel}
-                />
-              } */}
-              {/* {selectedMenuItem === "Priority Job" && selectedMenuItem !== "Operations" &&
-                <Priorityjobspanel
-                  onClick={HandleJobIdtoJobPriority}
-                  onDoubleClick={HandleMultipleJobs}
-                />
-              } */}
-              {/* <Panel position="top-left">
-              <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    position: "fixed",
-                    top: 60,
-                    // backgroundColor:'#1D9C9C',
-                  }}
-                >
-              <Typography
-                  variant="h5"
-                  noWrap
-                  component="a"
-                  // href="#app-bar-with-responsive-menu"
-                  sx={{
-                    mr: 2,
-                    flexGrow: 1,
-                    fontWeight: 700,
-                    letterSpacing: '.1rem',
-                    color: '#034661',
-                    textDecoration: 'none',
-                    // width:'200px'
-                  }}
-                >
-                      {selectedMenuItem}
-                </Typography>
-              </div>
-              </Panel> */}
               <Panel position="top-left">
-                <div
-                  style={{
+                <Box
+                  sx={{
                     display: "flex",
-                    flexDirection: "column",
+                    gap: 1,
                     position: "fixed",
-                    // left: 80,
                     top: 60,
+                    background: "white",
+                    borderRadius: "5px",
+                    boxShadow: "0 4px 10px 4px #eee",
+                    p: "2px",
                   }}
                 >
                   <OverlayTrigger
@@ -4127,19 +3687,38 @@ const AdministrationShowRoutes = ({
                     overlay={(props) => <Tooltip {...props}>Add Node</Tooltip>}
                     placement="right"
                   >
-                    <Button
-                      style={{ width: "50px", border: "1px solid #ECECEF" }}
-                      className="mt-2"
-                      variant="white"
+                    <IconButton
                       id="savebutton"
+                      sx={{ width: "30px", minWidth: 0, px: 0, py: 0.5 }}
                       onClick={() => onAddNode("NodeType")}
                     >
                       <BsPlusLg
                         id="icon"
-                        style={{ fontSize: "20px", color: "7C7C7C" }}
+                        style={{
+                          fontSize: "16px",
+                          color: theme.palette.primary.main,
+                        }}
                       />
-                      {/* <FaPlus style={{color:'7C7C7C'}}/> */}
-                    </Button>
+                    </IconButton>
+                  </OverlayTrigger>
+                  <OverlayTrigger
+                    delay={{ hide: 450, show: 300 }}
+                    overlay={(props) => <Tooltip {...props}>Save</Tooltip>}
+                    placement="right"
+                  >
+                    <IconButton
+                      id="savebutton"
+                      sx={{ width: "30px", minWidth: 0, px: 0, py: 0.5 }}
+                      onClick={handleEdgesandNodes}
+                    >
+                      <FaSave
+                        id="icon"
+                        style={{
+                          fontSize: "16px",
+                          color: theme.palette.primary.main,
+                        }}
+                      />
+                    </IconButton>
                   </OverlayTrigger>
                   <OverlayTrigger
                     delay={{ hide: 450, show: 300 }}
@@ -4148,38 +3727,21 @@ const AdministrationShowRoutes = ({
                     )}
                     placement="right"
                   >
-                    <Button
-                      style={{ width: "50px", border: "1px solid #ECECEF" }}
-                      className="mt-2"
-                      variant="white"
+                    <IconButton
                       id="savebutton"
+                      sx={{ width: "30px", minWidth: 0, px: 0, py: 0.5 }}
                       onClick={HandleDeleteNodes}
                     >
                       <RiDeleteBinLine
                         id="icon"
-                        style={{ fontSize: "20px", color: "7C7C7C" }}
+                        style={{
+                          fontSize: "16px",
+                          color: theme.palette.primary.main,
+                        }}
                       />
-                    </Button>
+                    </IconButton>
                   </OverlayTrigger>
-                  <OverlayTrigger
-                    delay={{ hide: 450, show: 300 }}
-                    overlay={(props) => <Tooltip {...props}>Save</Tooltip>}
-                    placement="right"
-                  >
-                    <Button
-                      style={{ width: "50px", border: "1px solid #ECECEF" }}
-                      className="mt-2"
-                      id="savebutton"
-                      variant="white"
-                      onClick={handleEdgesandNodes}
-                    >
-                      <FaSave
-                        id="icon"
-                        style={{ fontSize: "20px", color: "7C7C7C" }}
-                      />
-                    </Button>
-                  </OverlayTrigger>
-                </div>
+                </Box>
                 <div>
                   <div style={{ position: "absolute", top: 123, right: 0 }}>
                     {nodes.map((node) => (
@@ -4192,36 +3754,14 @@ const AdministrationShowRoutes = ({
                               marginBottom: "5px",
                               marginRight: "-5px",
                             }}
-                          >
-                            {/* <OverlayTrigger
-                            delay={{ hide: 450, show: 300 }}
-                            overlay={(props) => (
-                              <Tooltip {...props}>Update Node</Tooltip>
-                            )}
-                            placement="left"
-                          >
-                            <Button
-                              className="edit-button mt-2"
-                              variant="primary"
-                              // size="sm"
-                              style={{ width: "50px",background:'#09587c' }}
-                              onClick={() => handleEditNode(node)}
-                            >
-                              <FaEdit/>
-                            </Button>
-                          </OverlayTrigger> */}
-                          </div>
+                          ></div>
                         )}
                       </div>
                     ))}
                   </div>
-                  <div style={{ position: "absolute", top: 165, right: 0 }}>
-                    {/* {edges.map((edge) => (
-                      <div key={edge.id} className="edge">
-                       
-                      </div>
-                    ))} */}
-                  </div>
+                  <div
+                    style={{ position: "absolute", top: 165, right: 0 }}
+                  ></div>
                   <div style={{ position: "absolute", top: -22, right: -10 }}>
                     {selectedNodeForEdit && (
                       <NodeEditor
@@ -4239,17 +3779,6 @@ const AdministrationShowRoutes = ({
                     )}
                   </div>
                 </div>
-              </Panel>
-              <Panel>
-                {/* {showGraph && (
-                    <div
-                    style={{position:'absolute',
-                    top:'-250px',
-                    left:'485px'}}
-                    >
-                    <JobPriorityGraphs jobIdtopriority={jobIdtopriority}/>
-                    </div>
-                  )} */}
               </Panel>
               {/* <Background variant="lines" /> */}
             </ReactFlow>
@@ -4285,9 +3814,7 @@ const AdministrationShowRoutes = ({
                 onEdgeContextMenu={onEdgeContextMenu}
               />
             )}
-            {/* {NodestoMachineGraph && NodestoMachineGraph.length > 0 && (
-              <MachineNode/>
-            )} */}
+
             {PopupEmp && (
               <div
                 className="popup"
@@ -4400,88 +3927,53 @@ const AdministrationShowRoutes = ({
         />
       )}
       {open && (
-      //   <Modal
-      //   open={open}
-      //   onClose={handleCloseDeletPopup}
-      //   aria-labelledby="modal-modal-title"
-      //   aria-describedby="modal-modal-description"
-      // >
-      //   <Box sx={style}>
-      //     <FaRegRectangleXmark 
-      //               onClick={handleCloseDeletPopup}
-      //               style={{
-      //                         fontSize:'20px',
-      //                         color:'red',
-      //                         position:'absolute',
-      //                         right:1,
-      //                         top:0,
-      //                         cursor:'pointer'
-      //                         }}/>
-      //     <Typography id="modal-modal-title" variant="h6" component="h2">
-      //     Are you sure you want to delete the Machine Node? This action may also delete all the dependent nodes.
-      //     </Typography>
+        <React.Fragment>
+          <Dialog
+            open={open}
+            onClose={handleCloseDeletPopup}
+            PaperComponent={PaperComponent}
+            aria-labelledby="draggable-dialog-title"
+          >
+            <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+              Are you sure you want to delete the Machine Node? This action may
+              also delete all the dependent nodes.
+            </DialogTitle>
 
-      //     {/* Use proper label for radio buttons */}
-      //     <Box mt={2}>
-      //       hello
-      //     </Box>
-      //   </Box>
-      // </Modal>
-      <React.Fragment>
-      <Dialog
-        open={open}
-        onClose={handleCloseDeletPopup}
-        PaperComponent={PaperComponent}
-        aria-labelledby="draggable-dialog-title"
-      >
-        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-          Are you sure you want to delete the Machine Node? This action may also 
-          delete all the dependent nodes.
-        </DialogTitle>
-        {/* <DialogContent>
-          <DialogContentText>
-          Are you sure you want to delete the Machine Node? This action may also 
-          delete all the dependent nodes.
-          </DialogContentText>
-        </DialogContent> */}
-        <DialogActions>
-          <Button onClick={deleteSelectedElements}>Yes</Button>
-          <Button autoFocus onClick={handleCloseDeletPopup}>
-            No
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+            <DialogActions>
+              <Button onClick={deleteSelectedElements}>Yes</Button>
+              <Button autoFocus onClick={handleCloseDeletPopup}>
+                No
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </React.Fragment>
       )}
 
       {openUnselected && (
         <React.Fragment>
-        <Dialog
-          open={openUnselected}
-          onClose={handleCloseUnselectedPopup}
-          PaperComponent={PaperComponent}
-          aria-labelledby="draggable-dialog-title"
-        >
-          <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-            Please Select the Node to Delete.
-          </DialogTitle>
-          {/* <DialogContent>
-            <DialogContentText>
-            Are you sure you want to delete the Machine Node? This action may also 
-            delete all the dependent nodes.
-            </DialogContentText>
-          </DialogContent> */}
-          <DialogActions>
-            <Button onClick={handleCloseUnselectedPopup}>OK</Button>
-          </DialogActions>
-        </Dialog>
-      </React.Fragment>
+          <Dialog
+            open={openUnselected}
+            onClose={handleCloseUnselectedPopup}
+            PaperComponent={PaperComponent}
+            aria-labelledby="draggable-dialog-title"
+          >
+            <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+              Please Select the Node to Delete.
+            </DialogTitle>
+            <DialogActions>
+              <Button onClick={handleCloseUnselectedPopup}>OK</Button>
+            </DialogActions>
+          </Dialog>
+        </React.Fragment>
       )}
 
       {FullNodeDetails && (
-      <FullScreenModal FullNodeDetails={FullNodeDetails} FullNodeData={FullNodeData} onClose={HandleCloseFullScreen}/>
+        <FullScreenModal
+          FullNodeDetails={FullNodeDetails}
+          FullNodeData={FullNodeData}
+          onClose={HandleCloseFullScreen}
+        />
       )}
-
     </div>
   );
 };

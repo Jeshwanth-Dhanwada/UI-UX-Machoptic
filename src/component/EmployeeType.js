@@ -2,7 +2,7 @@ import { FaXmark, FaCheck, FaMinus, FaPlus } from "react-icons/fa6";
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants";
 
 import Tooltip from "@mui/material/Tooltip";
 
@@ -16,7 +16,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import { FaEdit } from "react-icons/fa";
 import AuthContext from "../context/AuthProvider";
 
-function EmployeeType({tableHeight}) {
+function EmployeeType({ tableHeight }) {
   const { auth } = useContext(AuthContext);
   const [data, setData] = useState([]);
 
@@ -197,22 +197,24 @@ function EmployeeType({tableHeight}) {
 
   const [height, setHeight] = useState();
   useEffect(() => {
-    console.log(tableHeight,"heightt")
-    if(tableHeight > '1' && tableHeight < '360'){
+    console.log(tableHeight, "heightt");
+    if (tableHeight > "1" && tableHeight < "360") {
       setHeight(tableHeight);
-    }
-    else{
-      setHeight('350px')
+    } else {
+      setHeight("350px");
     }
   }, []);
 
   return (
-    <div className="container-fluid p-2" style={{
-      // height: tableHeight ? tableHeight : '200px',
-      height:  height,
-      overflowY: "scroll",
-      overflowX :"hidden"
-    }}>
+    <div
+      className="container-fluid p-2"
+      style={{
+        // height: tableHeight ? tableHeight : '200px',
+        height: height,
+        overflowY: "scroll",
+        overflowX: "hidden",
+      }}
+    >
       <div className="col-3 d-flex flex-row justify-content-end m-1">
         <input
           type="text"
