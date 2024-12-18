@@ -5,7 +5,7 @@ import { FaXmark, FaSistrix } from "react-icons/fa6";
 import TextField from "@mui/material/TextField";
 import "react-toastify/dist/ReactToastify.css";
 
-import { BASE_URL } from "../../constants/apiConstants";
+import { BASE_URL } from "../../utils/apiConstants";
 import { Backdrop, CircularProgress } from "@mui/material";
 
 function NodeAllocation() {
@@ -13,7 +13,7 @@ function NodeAllocation() {
     event.dataTransfer.setData("application/reactflow", JSON.stringify(job));
     event.dataTransfer.effectAllowed = "move";
   };
- const [OpenLoader,setOpenLoader] = useState(false)
+  const [OpenLoader, setOpenLoader] = useState(false);
   const [data, setData] = useState([]);
   const [Employee, setEmployeeData] = useState([]);
   const [shiftdata, setShiftdata] = useState([]);
@@ -31,7 +31,7 @@ function NodeAllocation() {
     axios
       .get(apiUrl)
       .then((response) => {
-//         console.log(response.data);
+        //         console.log(response.data);
         setData(response.data);
       })
       .catch((error) => {
@@ -66,7 +66,7 @@ function NodeAllocation() {
   }, []);
 
   useEffect(() => {
-    setOpenLoader(true)
+    setOpenLoader(true);
     let updated = data.filter(
       (item) =>
         !NodeAllocation.some(
@@ -137,7 +137,7 @@ function NodeAllocation() {
     .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   // const formattedTime = '20:01:00'
 
-//   console.log(formattedTime);
+  //   console.log(formattedTime);
   // console.log(formattedTime);
 
   const shiftST = shiftdata.map((item) => item.startTime);
@@ -146,7 +146,7 @@ function NodeAllocation() {
   function getShiftTime() {
     if (formattedTime >= shiftST[0] && shiftET[0] >= formattedTime) {
       const firstShift = shiftdata.map((item) => item.shiftNumber);
-//       console.log(firstShift);
+      //       console.log(firstShift);
       // setShiftId(firstShift[0]); // Update the shiftId state
       return firstShift[0];
     } else {
@@ -157,7 +157,7 @@ function NodeAllocation() {
     }
   }
   getShiftTime();
-//   console.log(getShiftTime(), "getshifttime");
+  //   console.log(getShiftTime(), "getshifttime");
 
   useEffect(() => {
     // Fetch data from the API when the component mounts
@@ -165,7 +165,7 @@ function NodeAllocation() {
     axios
       .get(apiUrl)
       .then((response) => {
-//         console.log(response.data);
+        //         console.log(response.data);
         setNodeAllocation(response.data);
         // const routedata.push(response.data)
         // console.log(routedata,"passing to the variable")
@@ -221,8 +221,8 @@ function NodeAllocation() {
           <thead class="sticky-top">
             <tr>
               {/* <th>Attendance ID</th> */}
-              <th style={{ width: "30%",fontSize: "11px" }}>Employee ID</th>
-              <th style={{fontSize: "11px"}}>
+              <th style={{ width: "30%", fontSize: "11px" }}>Employee ID</th>
+              <th style={{ fontSize: "11px" }}>
                 Employee Name
                 {isSearchVisible ? (
                   <div
@@ -290,12 +290,12 @@ function NodeAllocation() {
       </div>
       {OpenLoader && (
         <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={OpenLoader}
         >
           <CircularProgress size={80} color="inherit" />
         </Backdrop>
-        )}
+      )}
     </aside>
   );
 }

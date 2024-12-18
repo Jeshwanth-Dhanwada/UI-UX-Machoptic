@@ -1,11 +1,12 @@
-import ShovelNodesView from "../component/shovelNodesView"
-import DashboardLayout from "../layout/dashboard"
+import ShovelNodesView from "../component/shovelNodesView";
+import DashboardLayout from "../layout/dashboard";
 
 const ShovelNodes = () => {
-
-    return <DashboardLayout>
-        <ShovelNodesView/>
+  return (
+    <DashboardLayout>
+      <ShovelNodesView />
     </DashboardLayout>
-}
+  );
+};
 
-export default ShovelNodes
+export default ShovelNodes;

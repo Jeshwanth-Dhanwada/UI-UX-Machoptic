@@ -1,19 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
 // import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { AuthProvider } from './context/AuthProvider';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { StyledEngineProvider } from '@mui/material/styles';
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { AuthProvider } from "./context/AuthProvider";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { StyledEngineProvider } from "@mui/material/styles";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <AuthProvider>
-        <StyledEngineProvider injectFirst>
-            <App />
-        </StyledEngineProvider>,
-    </AuthProvider>
+  <AuthProvider>
+    <StyledEngineProvider injectFirst>
+      <App />
+    </StyledEngineProvider>
+  </AuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

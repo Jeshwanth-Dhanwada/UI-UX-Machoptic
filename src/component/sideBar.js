@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "reactflow/dist/style.css";
 import "./sidebar.css";
 import "reactflow/dist/style.css";
-import { Tooltip } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import { SlArrowLeft } from "react-icons/sl";
 
 import Paper from "@mui/material/Paper";
@@ -24,8 +24,8 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
     handleLinkClick(item);
     setshowContainer(item);
     setAnalyticsbooleanCon(!AnalyticsBoolean);
-    setReportsBoolean(!ReportsBoolean)
-    setDataImportsBoolean(!DataImportsBoolean)
+    setReportsBoolean(!ReportsBoolean);
+    setDataImportsBoolean(!DataImportsBoolean);
   };
   // console.log(isExpanded,"gggg")
   const handleToggler = (event) => {
@@ -33,9 +33,9 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
       setIsExpanded(false);
       return;
     }
-    setAnalyticsbooleanCon(false)
-    setReportsBoolean(false)
-    setDataImportsBoolean(false)
+    setAnalyticsbooleanCon(false);
+    setReportsBoolean(false);
+    setDataImportsBoolean(false);
     setIsExpanded(true);
   };
 
@@ -67,18 +67,17 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
   };
 
   return (
-    <div className={isExpanded ? "sidebar" : "sidebar collapsed"}>
-      <div className="sidebar-header" 
-      onClick={() => {
-              handleToggler();
-            }}>
-        {isExpanded == false && (
-          <RiMenuLine
-            className="sidebar-icon"
-            style={{ color: "#505050" }}
-          />
+    <Box className={isExpanded ? "sidebar" : "sidebar collapsed"}>
+      <div
+        className="sidebar-header"
+        onClick={() => {
+          handleToggler();
+        }}
+      >
+        {!isExpanded && (
+          <RiMenuLine className="sidebar-icon" style={{ color: "#505050" }} />
         )}
-        {isExpanded == true && (
+        {isExpanded && (
           <SlArrowLeft
             onClick={() => {
               handleToggler();
@@ -224,7 +223,7 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
                   </MenuItem>
                 </Link>
               </Tooltip>
-              
+
               {/* <Tooltip title="Optimization" placement="right">
                 <Link
                   to=""
@@ -249,43 +248,43 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
                 </Link>
               </Tooltip> */}
               <Tooltip title="Analytics" placement="right">
-              <Link
-                // to="/jobPriority"
-                // onClick={() => handleLinkClickName("Analytics - Priority Job")}
-                style={{ textDecoration: "none", color: "white" }}
-              >
-                <MenuItem
-                  onClick={() => handleLinkClickName("Analytics")}
-                  style={
-                    active === "Analytics - Priority Job"
-                      ? { backgroundColor: "#E6ECEF" }
-                      : { backgroundColor: "#ffffff" }
-                  }
-                  className="label"
-                  icon={
-                    <svg
-                      className="sidebar-icon"
-                      style={{ color: "#505050" }}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M21.75 19.5C21.75 19.6989 21.671 19.8897 21.5303 20.0303C21.3897 20.171 21.1989 20.25 21 20.25H3C2.80109 20.25 2.61032 20.171 2.46967 20.0303C2.32902 19.8897 2.25 19.6989 2.25 19.5V4.5C2.25 4.30109 2.32902 4.11032 2.46967 3.96967C2.61032 3.82902 2.80109 3.75 3 3.75C3.19891 3.75 3.38968 3.82902 3.53033 3.96967C3.67098 4.11032 3.75 4.30109 3.75 4.5V13.3472L8.50594 9.1875C8.63535 9.07421 8.79978 9.00885 8.97165 9.00236C9.14353 8.99587 9.31241 9.04866 9.45 9.15188L14.9634 13.2872L20.5059 8.4375C20.5786 8.36556 20.6652 8.30925 20.7605 8.27201C20.8557 8.23478 20.9575 8.21741 21.0597 8.22097C21.1619 8.22454 21.2623 8.24896 21.3547 8.29275C21.4471 8.33653 21.5296 8.39875 21.5971 8.47558C21.6645 8.5524 21.7156 8.64222 21.7471 8.7395C21.7786 8.83678 21.7899 8.93948 21.7802 9.04128C21.7706 9.14307 21.7402 9.24182 21.691 9.33146C21.6418 9.42109 21.5748 9.49972 21.4941 9.5625L15.4941 14.8125C15.3646 14.9258 15.2002 14.9912 15.0283 14.9976C14.8565 15.0041 14.6876 14.9513 14.55 14.8481L9.03656 10.7147L3.75 15.3403V18.75H21C21.1989 18.75 21.3897 18.829 21.5303 18.9697C21.671 19.1103 21.75 19.3011 21.75 19.5Z"
-                        fill="black"
-                      />
-                    </svg>
-                  }
+                <Link
+                  // to="/jobPriority"
+                  // onClick={() => handleLinkClickName("Analytics - Priority Job")}
+                  style={{ textDecoration: "none", color: "white" }}
                 >
-                  <span
-                    className={
-                      isExpanded ? "sidebar-text-show" : "sidebar-text"
+                  <MenuItem
+                    onClick={() => handleLinkClickName("Analytics")}
+                    style={
+                      active === "Analytics - Priority Job"
+                        ? { backgroundColor: "#E6ECEF" }
+                        : { backgroundColor: "#ffffff" }
+                    }
+                    className="label"
+                    icon={
+                      <svg
+                        className="sidebar-icon"
+                        style={{ color: "#505050" }}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M21.75 19.5C21.75 19.6989 21.671 19.8897 21.5303 20.0303C21.3897 20.171 21.1989 20.25 21 20.25H3C2.80109 20.25 2.61032 20.171 2.46967 20.0303C2.32902 19.8897 2.25 19.6989 2.25 19.5V4.5C2.25 4.30109 2.32902 4.11032 2.46967 3.96967C2.61032 3.82902 2.80109 3.75 3 3.75C3.19891 3.75 3.38968 3.82902 3.53033 3.96967C3.67098 4.11032 3.75 4.30109 3.75 4.5V13.3472L8.50594 9.1875C8.63535 9.07421 8.79978 9.00885 8.97165 9.00236C9.14353 8.99587 9.31241 9.04866 9.45 9.15188L14.9634 13.2872L20.5059 8.4375C20.5786 8.36556 20.6652 8.30925 20.7605 8.27201C20.8557 8.23478 20.9575 8.21741 21.0597 8.22097C21.1619 8.22454 21.2623 8.24896 21.3547 8.29275C21.4471 8.33653 21.5296 8.39875 21.5971 8.47558C21.6645 8.5524 21.7156 8.64222 21.7471 8.7395C21.7786 8.83678 21.7899 8.93948 21.7802 9.04128C21.7706 9.14307 21.7402 9.24182 21.691 9.33146C21.6418 9.42109 21.5748 9.49972 21.4941 9.5625L15.4941 14.8125C15.3646 14.9258 15.2002 14.9912 15.0283 14.9976C14.8565 15.0041 14.6876 14.9513 14.55 14.8481L9.03656 10.7147L3.75 15.3403V18.75H21C21.1989 18.75 21.3897 18.829 21.5303 18.9697C21.671 19.1103 21.75 19.3011 21.75 19.5Z"
+                          fill="black"
+                        />
+                      </svg>
                     }
                   >
-                    Analytics
-                  </span>
-                </MenuItem>
-              </Link>
+                    <span
+                      className={
+                        isExpanded ? "sidebar-text-show" : "sidebar-text"
+                      }
+                    >
+                      Analytics
+                    </span>
+                  </MenuItem>
+                </Link>
               </Tooltip>
               {/* <Tooltip title="Reports" placement="right">
                 <MenuItem
@@ -523,7 +522,7 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
                   </span>
                 </MenuItem>
               </Link>
-             
+
               {/* <Link
                 to=""
                 onClick={() => handleLinkClickName("Optimization")}
@@ -581,7 +580,9 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
                 >
                   <Link
                     to="/job_status"
-                    onClick={() => handleLinkClickName("Analytics - Job Status")}
+                    onClick={() =>
+                      handleLinkClickName("Analytics - Job Status")
+                    }
                     style={{ textDecoration: "none", color: "white" }}
                   >
                     <span
@@ -606,7 +607,9 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
                 >
                   <Link
                     to="/MachinewiseReport"
-                    onClick={() => handleLinkClickName("Analytics - Machine Wise Report")}
+                    onClick={() =>
+                      handleLinkClickName("Analytics - Machine Wise Report")
+                    }
                     style={{ textDecoration: "none", color: "white" }}
                   >
                     <span
@@ -631,7 +634,9 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
                 >
                   <Link
                     to="/MaterialWiseReport"
-                    onClick={() => handleLinkClickName("Analytics - Material Data Report")}
+                    onClick={() =>
+                      handleLinkClickName("Analytics - Material Data Report")
+                    }
                     style={{ textDecoration: "none", color: "white" }}
                   >
                     <span
@@ -657,7 +662,9 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
                   <Link
                     to="/MaterialProductionReport"
                     onClick={() =>
-                      handleLinkClickName("Analytics - Material Production Report")
+                      handleLinkClickName(
+                        "Analytics - Material Production Report"
+                      )
                     }
                     style={{ textDecoration: "none", color: "white" }}
                   >
@@ -683,7 +690,9 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
                 >
                   <Link
                     to="/sveltCharts"
-                    onClick={() => handleLinkClickName("Analytics - Gantt Charts")}
+                    onClick={() =>
+                      handleLinkClickName("Analytics - Gantt Charts")
+                    }
                     style={{ textDecoration: "none", color: "white" }}
                   >
                     <span
@@ -708,7 +717,9 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
                 >
                   <Link
                     to="/MainMindMap"
-                    onClick={() => handleLinkClickName("Analytics - DrillDown Analysis")}
+                    onClick={() =>
+                      handleLinkClickName("Analytics - DrillDown Analysis")
+                    }
                     style={{ textDecoration: "none", color: "white" }}
                   >
                     <span
@@ -733,7 +744,9 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
                 >
                   <Link
                     to="/jobPriority"
-                    onClick={() => handleLinkClickName("Analytics - Priority Job")}
+                    onClick={() =>
+                      handleLinkClickName("Analytics - Priority Job")
+                    }
                     style={{ textDecoration: "none", color: "white" }}
                   >
                     <span
@@ -1105,7 +1118,9 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
               <b className="m-2">Analytics</b>
               <Link
                 to="/MachinewiseReport"
-                onClick={() => handleLinkClickName("Analytics - Machine Wise Report")}
+                onClick={() =>
+                  handleLinkClickName("Analytics - Machine Wise Report")
+                }
                 style={{ textDecoration: "none", color: "white" }}
               >
                 <MenuIte>
@@ -1125,7 +1140,9 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
               </Link>
               <Link
                 to="/MaterialWiseReport"
-                onClick={() => handleLinkClickName("Analytics - Material Data Report")}
+                onClick={() =>
+                  handleLinkClickName("Analytics - Material Data Report")
+                }
                 style={{ textDecoration: "none", color: "white" }}
               >
                 <MenuIte>
@@ -1165,7 +1182,9 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
               </Link>
               <Link
                 to="/MaterialProductionReport"
-                onClick={() => handleLinkClickName("Analytics - Material Production Report")}
+                onClick={() =>
+                  handleLinkClickName("Analytics - Material Production Report")
+                }
                 style={{ textDecoration: "none", color: "white" }}
               >
                 <MenuIte>
@@ -1209,7 +1228,9 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
               </Link>
               <Link
                 to="/MainMindMap"
-                onClick={() => handleLinkClickName("Analytics - DrillDown Analysis")}
+                onClick={() =>
+                  handleLinkClickName("Analytics - DrillDown Analysis")
+                }
                 style={{ textDecoration: "none", color: "white" }}
               >
                 <MenuIte>
@@ -1491,7 +1512,7 @@ function Sidebar({ isExpanded, setIsExpanded, handleLinkClick }) {
           </Paper>
         </div>
       )} */}
-    </div>
+    </Box>
   );
 }
 export default Sidebar;

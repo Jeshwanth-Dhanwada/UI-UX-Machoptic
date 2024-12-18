@@ -4,7 +4,7 @@ import { FaXmark, FaCheck, FaPlus, FaMinus } from "react-icons/fa6";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { FaEdit } from "react-icons/fa";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants";
 
 // Material UI for dialog box
 
@@ -19,7 +19,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import AuthContext from "../context/AuthProvider";
 import { getEmployees } from "../api/shovelDetails";
 
-function Employee({tableHeight}) {
+function Employee({ tableHeight }) {
   const { auth } = useContext(AuthContext);
 
   const [empTypeId, setempTypeId] = useState();
@@ -37,14 +37,13 @@ function Employee({tableHeight}) {
   const [data, setData] = useState([]);
   // Employee data ------------
 
-  const showEmployeeData = async(key) =>{
-    const responsedata = await getEmployees()
-    setData(responsedata,key)
-  }
+  const showEmployeeData = async (key) => {
+    const responsedata = await getEmployees();
+    setData(responsedata, key);
+  };
   useEffect(() => {
-    showEmployeeData()
-  }, [])
-
+    showEmployeeData();
+  }, []);
 
   const handleempType = (event) => {
     setempTypeId(event.target.value);
@@ -297,12 +296,11 @@ function Employee({tableHeight}) {
 
   const [height, setHeight] = useState();
   useEffect(() => {
-    console.log(tableHeight,"heightt")
-    if(tableHeight > '1' && tableHeight < '360'){
+    console.log(tableHeight, "heightt");
+    if (tableHeight > "1" && tableHeight < "360") {
       setHeight(tableHeight);
-    }
-    else{
-      setHeight('350px')
+    } else {
+      setHeight("350px");
     }
   }, []);
 
@@ -333,9 +331,9 @@ function Employee({tableHeight}) {
         className="container-fluid"
         style={{
           // height: tableHeight ? tableHeight : '200px',
-          height:  height,
+          height: height,
           overflowY: "scroll",
-          overflowX :"hidden"
+          overflowX: "hidden",
         }}
       >
         <div className="row">
@@ -588,14 +586,13 @@ function Employee({tableHeight}) {
                             </div>
                           ) : (
                             <div>
-                              
                               <FaMinus
                                 id="FaMinus"
                                 onClick={() =>
                                   handleClickdeletepopup(item.empId)
                                 }
                               />
-                                &nbsp;&nbsp;&nbsp;
+                              &nbsp;&nbsp;&nbsp;
                               <FaEdit
                                 onClick={() => handleEdit(index)}
                                 id="FaEdit"
@@ -734,10 +731,7 @@ function Employee({tableHeight}) {
                                 id="FaCheck"
                               />
                               &nbsp;&nbsp;&nbsp;
-                              <FaXmark
-                                onClick={HandleClose}
-                                id="FaMinus"
-                              />
+                              <FaXmark onClick={HandleClose} id="FaMinus" />
                             </div>
                           ) : (
                             <div>
@@ -747,12 +741,11 @@ function Employee({tableHeight}) {
                                 }
                                 id="FaMinus"
                               />
-                                &nbsp;&nbsp;&nbsp;
+                              &nbsp;&nbsp;&nbsp;
                               <FaEdit
                                 onClick={() => handleEdit(index)}
                                 id="FaEdit"
                               />
-                              
                             </div>
                           )}
                         </td>

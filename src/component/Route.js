@@ -6,7 +6,7 @@ import { FaXmark } from "react-icons/fa6";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants.js";
 import { HiPlus } from "react-icons/hi2";
 import { IoArrowUpSharp } from "react-icons/io5";
 
@@ -410,174 +410,174 @@ const RoutePopup = ({
         </div>
         <div className="row">
           <div className="col-12">
-        <table className="table table-bordered table-striped">
-          <thead style={{ fontSize: "small" }}>
-            <tr>
-              <th>&nbsp;</th>
-              <th>Route ID</th>
-              <th>Route Name</th>
-              <th>Material Type</th>
-              <th style={{ width: "80px" }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody border={"1px"}>
-            {data.map((item, index) => (
-              <tr key={item.routeId} style={{ cursor: "pointer" }}>
-                <td>
-                  <input
-                    type="radio"
-                    name="radio"
-                    value={item.routeId}
-                    onChange={() => sendDataToParent(item.routeId)}
-                  />
-                </td>
-                <td>{item.routeId}</td>
-                <td>
-                  {editedIndex === index ? (
-                    <input
-                      type="text"
-                      value={item.routeDescription}
-                      onChange={(e) => {
-                        // Update the edited item with the new value
-                        const newData = [...data];
-                        newData[index].routeDescription = e.target.value;
-                        setData(newData);
-                      }}
-                      style={{
-                        width: "100px",
-                        border: "none",
-                        backgroundColor: "whitesmoke",
-                      }}
-                    />
-                  ) : (
-                    <div>{item.routeDescription}</div>
-                  )}
-                </td>
-                <td>
-                  {editedIndex === index ? (
-                    <input
-                      type="text"
-                      value={item.productCategory}
-                      onChange={(e) => {
-                        // Update the edited item with the new value
-                        const newData = [...data];
-                        newData[index].productCategory = e.target.value;
-                        setData(newData);
-                      }}
-                      style={{
-                        width: "100px",
-                        border: "none",
-                        backgroundColor: "whitredesmoke",
-                      }}
-                    />
-                  ) : (
-                    <div>{item.productCategory}</div>
-                  )}
-                </td>
-                <td
-                  className=" align-items-center"
-                  style={{ textAlign: "center" }}
-                >
-                  <button
-                    style={{
-                      width: "20px",
-                      border: "none",
-                      backgroundColor: "transparent",
-                    }}
-                    onClick={() => handleDelete(index)}
-                  >
-                    <AiFillDelete style={{ color: "red" }} />
-                  </button>
+            <table className="table table-bordered table-striped">
+              <thead style={{ fontSize: "small" }}>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>Route ID</th>
+                  <th>Route Name</th>
+                  <th>Material Type</th>
+                  <th style={{ width: "80px" }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody border={"1px"}>
+                {data.map((item, index) => (
+                  <tr key={item.routeId} style={{ cursor: "pointer" }}>
+                    <td>
+                      <input
+                        type="radio"
+                        name="radio"
+                        value={item.routeId}
+                        onChange={() => sendDataToParent(item.routeId)}
+                      />
+                    </td>
+                    <td>{item.routeId}</td>
+                    <td>
+                      {editedIndex === index ? (
+                        <input
+                          type="text"
+                          value={item.routeDescription}
+                          onChange={(e) => {
+                            // Update the edited item with the new value
+                            const newData = [...data];
+                            newData[index].routeDescription = e.target.value;
+                            setData(newData);
+                          }}
+                          style={{
+                            width: "100px",
+                            border: "none",
+                            backgroundColor: "whitesmoke",
+                          }}
+                        />
+                      ) : (
+                        <div>{item.routeDescription}</div>
+                      )}
+                    </td>
+                    <td>
+                      {editedIndex === index ? (
+                        <input
+                          type="text"
+                          value={item.productCategory}
+                          onChange={(e) => {
+                            // Update the edited item with the new value
+                            const newData = [...data];
+                            newData[index].productCategory = e.target.value;
+                            setData(newData);
+                          }}
+                          style={{
+                            width: "100px",
+                            border: "none",
+                            backgroundColor: "whitredesmoke",
+                          }}
+                        />
+                      ) : (
+                        <div>{item.productCategory}</div>
+                      )}
+                    </td>
+                    <td
+                      className=" align-items-center"
+                      style={{ textAlign: "center" }}
+                    >
+                      <button
+                        style={{
+                          width: "20px",
+                          border: "none",
+                          backgroundColor: "transparent",
+                        }}
+                        onClick={() => handleDelete(index)}
+                      >
+                        <AiFillDelete style={{ color: "red" }} />
+                      </button>
 
-                  {editedIndex === index ? (
-                    <button
-                      style={{
-                        width: "20px",
-                        border: "none",
-                        color: "green",
-                      }}
-                      onClick={handleSave}
-                    >
-                      <FaCheck style={{ color: "green" }} />
-                    </button>
-                  ) : (
-                    <button
-                      style={{
-                        width: "25px",
-                        border: "none",
-                        backgroundColor: "transparent",
-                      }}
-                      onClick={() => handleEdit(index)}
-                    >
-                      <FaEdit style={{ color: "blue" }} />
-                    </button>
-                  )}
-                  <button
-                    style={{
-                      width: "20px",
-                      border: "none",
-                      backgroundColor: "transparent",
-                    }}
-                    onClick={handleClickOpen}
-                  >
-                    <IoArrowUpSharp />
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {isNewRowActive && (
-              <tr>
-                <td></td>
-                <td></td>
-                <td style={{ textAlign: "left" }}>
-                  <input
-                    type="text"
-                    name="routeDescription"
-                    placeholder="Route Name"
-                    required
-                    value={newRowData.routeDescription}
-                    onChange={handleNewRowInputChange}
-                    style={{
-                      border: "none",
-                      width: "100px",
-                      backgroundColor: "whitesmoke",
-                    }}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    name="productCategory"
-                    placeholder="Product Category"
-                    required
-                    value={newRowData.productCategory}
-                    onChange={handleNewRowInputChange}
-                    style={{
-                      border: "none",
-                      width: "100px",
-                      backgroundColor: "whitesmoke",
-                    }}
-                  />
-                </td>
-                <td>
-                  <button
-                    style={{ border: "none" }}
-                    onClick={handleNewRowSubmit}
-                  >
-                    <FaCheck style={{ color: "green" }} />
-                  </button>{" "}
-                  &nbsp;
-                  <button
-                    style={{ border: "none" }}
-                    onClick={() => setNewRowActive(false)}
-                  >
-                    <FaXmark style={{ color: "red" }} />
-                  </button>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                      {editedIndex === index ? (
+                        <button
+                          style={{
+                            width: "20px",
+                            border: "none",
+                            color: "green",
+                          }}
+                          onClick={handleSave}
+                        >
+                          <FaCheck style={{ color: "green" }} />
+                        </button>
+                      ) : (
+                        <button
+                          style={{
+                            width: "25px",
+                            border: "none",
+                            backgroundColor: "transparent",
+                          }}
+                          onClick={() => handleEdit(index)}
+                        >
+                          <FaEdit style={{ color: "blue" }} />
+                        </button>
+                      )}
+                      <button
+                        style={{
+                          width: "20px",
+                          border: "none",
+                          backgroundColor: "transparent",
+                        }}
+                        onClick={handleClickOpen}
+                      >
+                        <IoArrowUpSharp />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {isNewRowActive && (
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td style={{ textAlign: "left" }}>
+                      <input
+                        type="text"
+                        name="routeDescription"
+                        placeholder="Route Name"
+                        required
+                        value={newRowData.routeDescription}
+                        onChange={handleNewRowInputChange}
+                        style={{
+                          border: "none",
+                          width: "100px",
+                          backgroundColor: "whitesmoke",
+                        }}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        name="productCategory"
+                        placeholder="Product Category"
+                        required
+                        value={newRowData.productCategory}
+                        onChange={handleNewRowInputChange}
+                        style={{
+                          border: "none",
+                          width: "100px",
+                          backgroundColor: "whitesmoke",
+                        }}
+                      />
+                    </td>
+                    <td>
+                      <button
+                        style={{ border: "none" }}
+                        onClick={handleNewRowSubmit}
+                      >
+                        <FaCheck style={{ color: "green" }} />
+                      </button>{" "}
+                      &nbsp;
+                      <button
+                        style={{ border: "none" }}
+                        onClick={() => setNewRowActive(false)}
+                      >
+                        <FaXmark style={{ color: "red" }} />
+                      </button>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

@@ -7,12 +7,12 @@ import { FaSave } from "react-icons/fa";
 import TextField from "@mui/material/TextField";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BASE_URL } from "../../constants/apiConstants";
+import { BASE_URL } from "../../utils/apiConstants";
 import AuthContext from "../../context/AuthProvider";
 import { Backdrop, CircularProgress } from "@mui/material";
 
 function NodeState() {
-  const {auth} = useContext(AuthContext)
+  const { auth } = useContext(AuthContext);
   const [data, setData] = useState([]);
   const [AttendanceData, setAttendance] = useState([]);
   const [Shiftdata, setShiftData] = useState([]);
@@ -24,18 +24,17 @@ function NodeState() {
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
   const [isSearchVisible, setSearchVisible] = useState(false);
- const [OpenLoader,setOpenLoader] = useState(false)
+  const [OpenLoader, setOpenLoader] = useState(false);
 
   useEffect(() => {
     // Fetch data from the API when the component mounts
-    setOpenLoader(true)
-    const apiUrl =
-      `${BASE_URL}/api/employee`;
+    setOpenLoader(true);
+    const apiUrl = `${BASE_URL}/api/employee`;
     axios
       .get(apiUrl)
       .then((response) => {
         setData(response.data);
-        setOpenLoader(false)
+        setOpenLoader(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -44,14 +43,13 @@ function NodeState() {
 
   useEffect(() => {
     // Fetch data from the API when the component mounts
-    setOpenLoader(true)
-    const apiUrl =
-      `${BASE_URL}/api/employeeNodeMapping`;
+    setOpenLoader(true);
+    const apiUrl = `${BASE_URL}/api/employeeNodeMapping`;
     axios
       .get(apiUrl)
       .then((response) => {
         setEmpNode(response.data);
-        setOpenLoader(false)
+        setOpenLoader(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -60,8 +58,7 @@ function NodeState() {
 
   useEffect(() => {
     // Fetch data from the API when the component mounts
-    const apiUrl =
-      `${BASE_URL}/api/shift`;
+    const apiUrl = `${BASE_URL}/api/shift`;
     axios
       .get(apiUrl)
       .then((response) => {
@@ -76,15 +73,14 @@ function NodeState() {
 
   // Attnedance data ------------
   useEffect(() => {
-    setOpenLoader(true)
+    setOpenLoader(true);
     // Fetch data from the API when the component mounts
-    const apiUrl =
-      `${BASE_URL}/api/attendance`;
+    const apiUrl = `${BASE_URL}/api/attendance`;
     axios
       .get(apiUrl)
       .then((response) => {
         setAttendance(response.data);
-        setOpenLoader(false)
+        setOpenLoader(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -92,8 +88,7 @@ function NodeState() {
   }, []);
 
   function getAttendancedata() {
-    const apiUrl =
-      `${BASE_URL}/api/attendance`;
+    const apiUrl = `${BASE_URL}/api/attendance`;
     axios
       .get(apiUrl)
       .then((response) => {
@@ -180,10 +175,12 @@ function NodeState() {
   let Attend = [];
   let X = 0;
   for (let i = 0; i < data.length; i++) {
-    const empNodeVal = empNode.filter((item) => data[i].empId == item?.emp?.empId)
+    const empNodeVal = empNode.filter(
+      (item) => data[i].empId == item?.emp?.empId
+    );
     Attend.push({
       ...data[i],
-      ...empNodeVal[0]
+      ...empNodeVal[0],
     });
     Attend[i].date = date;
     // Attend[i].shiftId = 2;
@@ -225,7 +222,7 @@ function NodeState() {
         }
       }
     }
-    console.log(checkedEmployees,"checkedEmployees")
+    console.log(checkedEmployees, "checkedEmployees");
     // Check if there are any checked employees before sending the request
     if (checkedEmployees.length > 0) {
       const drop = {
@@ -244,9 +241,7 @@ function NodeState() {
         })),
       };
       axios
-        .put(
-          `${BASE_URL}/api/attendance/bulk`,
-          drop)
+        .put(`${BASE_URL}/api/attendance/bulk`, drop)
         .then((response) => {
           getAttendancedata();
           setSelectedCheckboxes([]);
@@ -265,8 +260,7 @@ function NodeState() {
         });
 
       axios
-        .put(
-          `${BASE_URL}/api/nodeAllocation/bulk`,nodeallocation)
+        .put(`${BASE_URL}/api/nodeAllocation/bulk`, nodeallocation)
         .then((response) => {
           console.log("Selected rows added successfully", response.data);
         })
@@ -295,11 +289,9 @@ function NodeState() {
 
   // const [checkdata, setcheckdata] = useState([])
   function getEMPAllocationId(empId) {
-
     const enp = empNode.forEach((item) => {});
     return enp ? enp.default : "Node Not Found";
   }
-
 
   // Create an array to hold the new Attend data
   const newAttendData = [];
@@ -308,7 +300,9 @@ function NodeState() {
     // Check if the empId is not present in the AttendanceData
     if (
       !AttendanceData.some(
-        (dataItem) => parseInt(dataItem.empId) === parseInt(item.empId) && dataItem.shiftId == item.shiftId 
+        (dataItem) =>
+          parseInt(dataItem.empId) === parseInt(item.empId) &&
+          dataItem.shiftId == item.shiftId
       )
     ) {
       // If it doesn't match, add it to the newAttendData
@@ -316,47 +310,49 @@ function NodeState() {
     }
   });
   return (
-<aside>
-<div className="row sticky-top">
-          <div className="col-12">
-            <form>
-              <div className="container p-0">
-                <div className="row">
-                  <div className="col-5">
-                    {/* Date : */}
-                    <input
-                      type="date"
-                      onChange={HandleDate}
-                      className="form-control"
-                      name="date"
-                      value={date}
-                      min={getFormattedToday()}
-                      max={getFormattedToday()}
-                    />
-                  </div>
-                  <div className="col-3">
-                    <label style={{fontSize:'13px'}}>Shift : {getShiftNumber()}</label>
-                  </div>
-                  <div className=" col-4">
-                    <button
-                      className="btn btn-sm"
-                      // style={{ border: "none" }}
-                      id="Facheck"
-                      onClick={handleNewRowSubmit}
-                    >
-                      <FaCheck />
-                    </button>
-                    &nbsp;
-                    <button className="btn btn-sm" id="FaXmark">
-                      <FaXmark />
-                    </button>
-                  </div>
+    <aside>
+      <div className="row sticky-top">
+        <div className="col-12">
+          <form>
+            <div className="container p-0">
+              <div className="row">
+                <div className="col-5">
+                  {/* Date : */}
+                  <input
+                    type="date"
+                    onChange={HandleDate}
+                    className="form-control"
+                    name="date"
+                    value={date}
+                    min={getFormattedToday()}
+                    max={getFormattedToday()}
+                  />
+                </div>
+                <div className="col-3">
+                  <label style={{ fontSize: "13px" }}>
+                    Shift : {getShiftNumber()}
+                  </label>
+                </div>
+                <div className=" col-4">
+                  <button
+                    className="btn btn-sm"
+                    // style={{ border: "none" }}
+                    id="Facheck"
+                    onClick={handleNewRowSubmit}
+                  >
+                    <FaCheck />
+                  </button>
+                  &nbsp;
+                  <button className="btn btn-sm" id="FaXmark">
+                    <FaXmark />
+                  </button>
                 </div>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
-  <div className="employee-list-container">
+      </div>
+      <div className="employee-list-container">
         <div className="row">
           <div className="col-12">
             <table
@@ -365,9 +361,16 @@ function NodeState() {
             >
               <thead className="sticky-top">
                 <tr>
-                  <th style={{fontSize:'11px'}}>ID</th>
+                  <th style={{ fontSize: "11px" }}>ID</th>
                   {/* <th>Employee Name</th> */}
-                  <th style={{ width: "200px",whiteSpace: "nowrap", position: "relative",fontSize:'11px' }}>
+                  <th
+                    style={{
+                      width: "200px",
+                      whiteSpace: "nowrap",
+                      position: "relative",
+                      fontSize: "11px",
+                    }}
+                  >
                     Employee Name
                     {isSearchVisible ? (
                       <div
@@ -405,10 +408,10 @@ function NodeState() {
                       </span>
                     )}
                   </th>
-                  <th style={{fontSize:'11px'}}>Desgination</th>
-                  <th style={{fontSize:'11px'}}>Default</th>
+                  <th style={{ fontSize: "11px" }}>Desgination</th>
+                  <th style={{ fontSize: "11px" }}>Default</th>
                   {/* <th>Allocated</th> */}
-                  <th style={{fontSize:'11px'}}>Attended</th>
+                  <th style={{ fontSize: "11px" }}>Attended</th>
                 </tr>
               </thead>
               <tbody>
@@ -418,7 +421,7 @@ function NodeState() {
                         <td>{item.empId}</td>
                         <td>{item.employeeName}</td>
                         <td>{item.designation}</td>
-                        <td style={{ textAlign: "center",}}>
+                        <td style={{ textAlign: "center" }}>
                           <Form.Check.Input
                             type="checkbox"
                             name="allocated"
@@ -427,7 +430,7 @@ function NodeState() {
                             checked={getEMPAllocationId(item.empId)}
                           />
                         </td>
-                        <td style={{ textAlign: "center", }}>
+                        <td style={{ textAlign: "center" }}>
                           <Form.Check.Input
                             type="checkbox"
                             name="attendance"
@@ -443,17 +446,17 @@ function NodeState() {
                         <td>{item.empId}</td>
                         <td>{item.employeeName}</td>
                         <td>{item.designation}</td>
-                        <td style={{ textAlign: "center",}}>
+                        <td style={{ textAlign: "center" }}>
                           {item.default || "No"}
                         </td>
                         {/* <td></td> */}
-                        <td style={{ textAlign: "center",}}>
+                        <td style={{ textAlign: "center" }}>
                           <Form.Check.Input
                             type="checkbox"
                             name="attendance"
                             // className="form-control"
                             id=""
-                            style={{border:'1px solid black'}}
+                            style={{ border: "1px solid black" }}
                             onChange={() => handleCheckboxChange(item.empId)}
                           />
                         </td>
@@ -465,16 +468,16 @@ function NodeState() {
         </div>
         <ToastContainer />
         {OpenLoader && (
-        <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={OpenLoader}
-          // onClick={handleClose}
-        >
-          <CircularProgress size={80} color="inherit" />
-        </Backdrop>
+          <Backdrop
+            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={OpenLoader}
+            // onClick={handleClose}
+          >
+            <CircularProgress size={80} color="inherit" />
+          </Backdrop>
         )}
       </div>
-</aside>
+    </aside>
   );
 }
 

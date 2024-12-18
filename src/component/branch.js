@@ -4,7 +4,7 @@ import { FaSistrix, FaMinus, FaXmark, FaCheck, FaPlus } from "react-icons/fa6";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { FaEdit, FaRegEdit } from "react-icons/fa";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants";
 
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -31,7 +31,7 @@ import { MdDelete } from "react-icons/md";
 import AuthContext from "../context/AuthProvider";
 import { getBranchs } from "../api/shovelDetails";
 
-function Branch({tableHeight}) {
+function Branch({ tableHeight }) {
   const { auth } = useContext(AuthContext);
   const [data, setData] = useState([]);
   const [OrgID, setOrgID] = useState();
@@ -45,13 +45,13 @@ function Branch({tableHeight}) {
 
   // Branch data ------------
 
-  const showBranchesData = async(key) =>{
-    const responsedata = await getBranchs()
-    setData(responsedata,key)
-  }
+  const showBranchesData = async (key) => {
+    const responsedata = await getBranchs();
+    setData(responsedata, key);
+  };
   useEffect(() => {
-    showBranchesData()
-  }, [])
+    showBranchesData();
+  }, []);
 
   // Handle input changes
 
@@ -277,18 +277,17 @@ function Branch({tableHeight}) {
 
   const [height, setHeight] = useState();
   useEffect(() => {
-    console.log(tableHeight,"heightt")
-    if(tableHeight > '1' && tableHeight < '360'){
+    console.log(tableHeight, "heightt");
+    if (tableHeight > "1" && tableHeight < "360") {
       setHeight(tableHeight);
-    }
-    else{
-      setHeight('350px')
+    } else {
+      setHeight("350px");
     }
   }, []);
 
   return (
     <div>
-      <div className="container-fluid p-2" >
+      <div className="container-fluid p-2">
         <div className="row">
           <div className="col-3 d-flex align-items-center">
             <input
@@ -312,7 +311,7 @@ function Branch({tableHeight}) {
       <div
         className="container-fluid"
         style={{
-          height: tableHeight ? tableHeight : '200px',
+          height: tableHeight ? tableHeight : "200px",
           overflowY: "auto",
         }}
       >
@@ -328,7 +327,7 @@ function Branch({tableHeight}) {
               <th>Contact Person</th>
               <th>Contact Number</th>
               <th>Contact Email</th>
-              <th style={{width:'100px'}}>Actions</th>
+              <th style={{ width: "100px" }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -425,12 +424,12 @@ function Branch({tableHeight}) {
                   />
                 </td>
                 <td style={{ textAlign: "center" }}>
-                    {/* <button className="btn text-success btn-sm" > */}
-                    <FaCheck id="FaCheck" onClick={handleSubmit}/>
-                    {/* </button> */}
+                  {/* <button className="btn text-success btn-sm" > */}
+                  <FaCheck id="FaCheck" onClick={handleSubmit} />
+                  {/* </button> */}
                   &nbsp;&nbsp;
                   {/* <button className="btn text-danger btn-sm" > */}
-                  <FaXmark id="FaMinus" onClick={emptyfields}/>
+                  <FaXmark id="FaMinus" onClick={emptyfields} />
                   {/* </button> */}
                 </td>
               </tr>
@@ -584,7 +583,7 @@ function Branch({tableHeight}) {
                         <div>{row.contactEmail}</div>
                       )}
                     </td>
-                    <td style={{textAlign:'center'}}>
+                    <td style={{ textAlign: "center" }}>
                       {editedIndex === index ? (
                         <div>
                           <FaCheck
@@ -606,8 +605,8 @@ function Branch({tableHeight}) {
                           <FaMinus
                             onClick={() => handleClickdeletepopup(row.branchId)}
                             id="FaMinus"
-                            />
-                            &nbsp;&nbsp;&nbsp;
+                          />
+                          &nbsp;&nbsp;&nbsp;
                           <FaEdit
                             onClick={() => handleEdit(index)}
                             id="FaEdit"
@@ -766,7 +765,7 @@ function Branch({tableHeight}) {
                         <div>{row.contactEmail}</div>
                       )}
                     </td>
-                    <td style={{textAlign:'center'}}>
+                    <td style={{ textAlign: "center" }}>
                       {editedIndex === index ? (
                         <div>
                           <FaCheck
@@ -787,8 +786,8 @@ function Branch({tableHeight}) {
                           <FaMinus
                             onClick={() => handleClickdeletepopup(row.branchId)}
                             id="FaMinus"
-                            />
-                            &nbsp;&nbsp;&nbsp;
+                          />
+                          &nbsp;&nbsp;&nbsp;
                           <FaEdit
                             onClick={() => handleEdit(index)}
                             id="FaEdit"

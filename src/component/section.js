@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import {FaMinus, FaPlus, FaXmark, FaCheck } from "react-icons/fa6";
+import { FaMinus, FaPlus, FaXmark, FaCheck } from "react-icons/fa6";
 import axios from "axios";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants";
 
 import "./sidebar.css";
 import Tooltip from "@mui/material/Tooltip";
@@ -20,24 +20,24 @@ import { FaEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { getSectiondata } from "../api/shovelDetails";
 
-function Section({tableHeight}) {
+function Section({ tableHeight }) {
   const { auth } = useContext(AuthContext);
   const [data, setData] = useState([]);
   const [department, setdepartment] = useState([]);
-  
-  const showSectionData = async(key) =>{
-    const responsedata = await getSectiondata()
-    setData(responsedata,key)
-  }
 
-  const showDepartmentData = async(key) =>{
-    const responsedata = await getSectiondata()
-    setdepartment(responsedata,key)
-  }
+  const showSectionData = async (key) => {
+    const responsedata = await getSectiondata();
+    setData(responsedata, key);
+  };
+
+  const showDepartmentData = async (key) => {
+    const responsedata = await getSectiondata();
+    setdepartment(responsedata, key);
+  };
 
   useEffect(() => {
-    showSectionData()
-    showDepartmentData()
+    showSectionData();
+    showDepartmentData();
   }, []);
 
   const [sectionName, setsectionName] = useState("");
@@ -76,8 +76,8 @@ function Section({tableHeight}) {
   };
 
   const handleClickdeletepopup = (Id) => {
-    console.log(Id,"check")
-    setsectionId(Id)
+    console.log(Id, "check");
+    setsectionId(Id);
     setOpenDelete(true);
   };
   const handleDeleteClose = () => {
@@ -89,7 +89,7 @@ function Section({tableHeight}) {
     setdeptId("");
   }
 
-  function handleSave(event,Id) {
+  function handleSave(event, Id) {
     const editedItem = data[editedIndex];
     event.preventDefault();
     const payload = {
@@ -104,7 +104,7 @@ function Section({tableHeight}) {
       .then((response) => {
         console.log("New row added successfully");
         showSectionData();
-        setEditedIndex(null)
+        setEditedIndex(null);
         toast.success(
           <span>
             <strong>Successfully</strong> Updated.
@@ -168,7 +168,7 @@ function Section({tableHeight}) {
       .then((response) => {
         console.log("New row added successfully");
         showSectionData();
-        setNewRowActive(false)
+        setNewRowActive(false);
         toast.success(
           <span>
             <strong>Successfully</strong> Added.
@@ -198,24 +198,26 @@ function Section({tableHeight}) {
   const removeEdit = (index) => {
     setEditedIndex(null);
   };
-  
+
   const [height, setHeight] = useState();
   useEffect(() => {
-    console.log(tableHeight,"heightt")
-    if(tableHeight > '1' && tableHeight < '360'){
+    console.log(tableHeight, "heightt");
+    if (tableHeight > "1" && tableHeight < "360") {
       setHeight(tableHeight);
-    }
-    else{
-      setHeight('350px')
+    } else {
+      setHeight("350px");
     }
   }, []);
   return (
-    <div className="container-fluid" style={{
-      // height: tableHeight ? tableHeight : '200px',
-      height:  height,
-      overflowY: "scroll",
-      overflowX :"hidden"
-    }}>
+    <div
+      className="container-fluid"
+      style={{
+        // height: tableHeight ? tableHeight : '200px',
+        height: height,
+        overflowY: "scroll",
+        overflowX: "hidden",
+      }}
+    >
       <div className="col-3 d-flex flex-row justify-content-end m-1">
         <input
           type="text"
@@ -240,10 +242,10 @@ function Section({tableHeight}) {
           <table className="table table-bordered table-striped">
             <thead>
               <tr>
-                <th style={{width:'15%'}}>Section Id</th>
-                <th style={{width:'25%'}}>Department Id</th>
-                <th style={{width:'30%'}}>Section Name</th>
-                <th style={{width:'15%'}}>Actions</th>
+                <th style={{ width: "15%" }}>Section Id</th>
+                <th style={{ width: "25%" }}>Department Id</th>
+                <th style={{ width: "30%" }}>Section Name</th>
+                <th style={{ width: "15%" }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -276,7 +278,7 @@ function Section({tableHeight}) {
                       style={{ height: "22px" }}
                     />
                   </td>
-                  <td style={{textAlign:'center'}}>
+                  <td style={{ textAlign: "center" }}>
                     <button
                       style={{ border: "none", background: "transparent" }}
                       onClick={handleSubmit}
@@ -295,278 +297,271 @@ function Section({tableHeight}) {
               )}
               {searchInput.length > 0
                 ? filteredResults.map((item, index) => (
-                  <tr>
-                  <td>{item.sectionId}</td>
-                  <td>
-                  {editedIndex === index ? (
-                    <select
-                      value={item.deptId}
-                      onChange={(e) => {
-                        const newData = [...data];
-                        newData[index].deptId = e.target.value;
-                        setData(newData);
-                      }}
-                      style={{
-                        border: "none",
-                        //       width: "100px",
-                        height: "20px",
-                        backgroundColor: "whitesmoke",
-                      }}
-                    >
-                      <option hidden>Please Select</option>
-                      {department.map((item) => (
-                        <option>{item.deptId}</option>
-                      ))}
-                    </select>
-                    ) : (
-                      <div>
-                        {item.deptId}
-                      </div>
-                    )}
-                  </td>
-                  <td>
-                    {editedIndex === index ? (
-                      <input
-                        value={item.sectionName}
-                        onChange={(e) => {
-                          const newData = [...data];
-                          newData[index].sectionName = e.target.value;
-                          setData(newData);
-                        }}
-                        style={{
-                          border: "none",
-                          //       width: "100px",
-                          height: "20px",
-                          backgroundColor: "whitesmoke",
-                        }}
-                      />
-                    ) : (
-                      <div>{item.sectionName}</div>
-                    )}
-                  </td>
-                  <td style={{textAlign:'center'}}>
-                    {editedIndex === index ? (
-                      <>
-                        <button
-                          style={{
-                            border: "none",
-                            backgroundColor: "transparent",
-                          }}
-                          onClick={removeEdit}
-                        >
-                          <FaXmark id="FaMinus" />
-                        </button>
-                      </>
-                    ) : (
-                      <span>
-                        <button
-                          style={{
-                            border: "none",
-                            backgroundColor: "transparent",
-                          }}
-                          onClick={handleClickdeletepopup}
-                        >
-                          <FaMinus id="FaMinus" />
-                        </button>
-                        <React.Fragment>
-                          <Dialog
-                            open={opendeletepopup}
-                            onClose={handleDeleteClose}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                            PaperProps={{
-                              style: {
-                                marginTop: -350, // Adjust the marginTop value as needed
-                                width: "40%",
-                              },
+                    <tr>
+                      <td>{item.sectionId}</td>
+                      <td>
+                        {editedIndex === index ? (
+                          <select
+                            value={item.deptId}
+                            onChange={(e) => {
+                              const newData = [...data];
+                              newData[index].deptId = e.target.value;
+                              setData(newData);
+                            }}
+                            style={{
+                              border: "none",
+                              //       width: "100px",
+                              height: "20px",
+                              backgroundColor: "whitesmoke",
                             }}
                           >
-                            <DialogTitle id="alert-dialog-title">
-                              {/* {"Taxonalytica"} */}
-                            </DialogTitle>
-                            <DialogContent>
-                              <DialogContentText id="alert-dialog-description">
-                                Are you sure you want to delete?
-                              </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                              <Button
-                              onClick={(e) =>
-                                handledelete(e)
-                              }
+                            <option hidden>Please Select</option>
+                            {department.map((item) => (
+                              <option>{item.deptId}</option>
+                            ))}
+                          </select>
+                        ) : (
+                          <div>{item.deptId}</div>
+                        )}
+                      </td>
+                      <td>
+                        {editedIndex === index ? (
+                          <input
+                            value={item.sectionName}
+                            onChange={(e) => {
+                              const newData = [...data];
+                              newData[index].sectionName = e.target.value;
+                              setData(newData);
+                            }}
+                            style={{
+                              border: "none",
+                              //       width: "100px",
+                              height: "20px",
+                              backgroundColor: "whitesmoke",
+                            }}
+                          />
+                        ) : (
+                          <div>{item.sectionName}</div>
+                        )}
+                      </td>
+                      <td style={{ textAlign: "center" }}>
+                        {editedIndex === index ? (
+                          <>
+                            <button
+                              style={{
+                                border: "none",
+                                backgroundColor: "transparent",
+                              }}
+                              onClick={removeEdit}
+                            >
+                              <FaXmark id="FaMinus" />
+                            </button>
+                          </>
+                        ) : (
+                          <span>
+                            <button
+                              style={{
+                                border: "none",
+                                backgroundColor: "transparent",
+                              }}
+                              onClick={handleClickdeletepopup}
+                            >
+                              <FaMinus id="FaMinus" />
+                            </button>
+                            <React.Fragment>
+                              <Dialog
+                                open={opendeletepopup}
+                                onClose={handleDeleteClose}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                                PaperProps={{
+                                  style: {
+                                    marginTop: -350, // Adjust the marginTop value as needed
+                                    width: "40%",
+                                  },
+                                }}
                               >
-                                Yes
-                              </Button>
-                              <Button onClick={handleDeleteClose}>No</Button>
-                            </DialogActions>
-                          </Dialog>
-                        </React.Fragment>
-                      </span>
-                    )}
-                    &nbsp;&nbsp;
-                    {editedIndex === index ? (
-                      <>
-                        <button
-                          style={{
-                            border: "none",
-                            backgroundColor: "transparent",
-                          }}
-                          onClick={(e) => handleSave(e,item.sectionId)}
-                        >
-                          <FaCheck id="FaCheck" />
-                        </button>
-                      </>
-                    ) : (
-                      <button
-                        style={{
-                          border: "none",
-                          backgroundColor: "transparent",
-                        }}
-                        onClick={() => handleEdit(index)}
-                      >
-                        <FaEdit id="FaEdit" />
-                      </button>
-                    )}
-                  </td>
-                </tr>
+                                <DialogTitle id="alert-dialog-title">
+                                  {/* {"Taxonalytica"} */}
+                                </DialogTitle>
+                                <DialogContent>
+                                  <DialogContentText id="alert-dialog-description">
+                                    Are you sure you want to delete?
+                                  </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                  <Button onClick={(e) => handledelete(e)}>
+                                    Yes
+                                  </Button>
+                                  <Button onClick={handleDeleteClose}>
+                                    No
+                                  </Button>
+                                </DialogActions>
+                              </Dialog>
+                            </React.Fragment>
+                          </span>
+                        )}
+                        &nbsp;&nbsp;
+                        {editedIndex === index ? (
+                          <>
+                            <button
+                              style={{
+                                border: "none",
+                                backgroundColor: "transparent",
+                              }}
+                              onClick={(e) => handleSave(e, item.sectionId)}
+                            >
+                              <FaCheck id="FaCheck" />
+                            </button>
+                          </>
+                        ) : (
+                          <button
+                            style={{
+                              border: "none",
+                              backgroundColor: "transparent",
+                            }}
+                            onClick={() => handleEdit(index)}
+                          >
+                            <FaEdit id="FaEdit" />
+                          </button>
+                        )}
+                      </td>
+                    </tr>
                   ))
-                :
-              data.map((item, index) => (
-                <tr>
-                  <td>{item.sectionId}</td>
-                  <td>
-                  {editedIndex === index ? (
-                    <select
-                      value={item.deptId}
-                      onChange={(e) => {
-                        const newData = [...data];
-                        newData[index].deptId = e.target.value;
-                        setData(newData);
-                      }}
-                      style={{
-                        border: "none",
-                        //       width: "100px",
-                        height: "20px",
-                        backgroundColor: "whitesmoke",
-                      }}
-                    >
-                      <option hidden>Please Select</option>
-                      {department.map((item) => (
-                        <option>{item.deptId}</option>
-                      ))}
-                    </select>
-                    ) : (
-                      <div>
-                        {item.deptId}
-                      </div>
-                    )}
-                  </td>
-                  <td>
-                    {editedIndex === index ? (
-                      <input
-                        value={item.sectionName}
-                        onChange={(e) => {
-                          const newData = [...data];
-                          newData[index].sectionName = e.target.value;
-                          setData(newData);
-                        }}
-                        style={{
-                          border: "none",
-                          //       width: "100px",
-                          height: "20px",
-                          backgroundColor: "whitesmoke",
-                        }}
-                      />
-                    ) : (
-                      <div>{item.sectionName}</div>
-                    )}
-                  </td>
-                  <td style={{textAlign:'center'}}>
-                    {editedIndex === index ? (
-                      <>
-                        <button
-                          style={{
-                            border: "none",
-                            backgroundColor: "transparent",
-                          }}
-                          onClick={removeEdit}
-                        >
-                          <FaXmark id="FaMinus" />
-                        </button>
-                      </>
-                    ) : (
-                      <span>
-                        <button
-                          style={{
-                            border: "none",
-                            backgroundColor: "transparent",
-                          }}
-                          onClick={() => handleClickdeletepopup(item.sectionId)}
-                        >
-                          <FaMinus id="FaMinus" />
-                        </button>
-                        <React.Fragment>
-                          <Dialog
-                            open={opendeletepopup}
-                            onClose={handleDeleteClose}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                            PaperProps={{
-                              style: {
-                                marginTop: -350, // Adjust the marginTop value as needed
-                                width: "40%",
-                              },
+                : data.map((item, index) => (
+                    <tr>
+                      <td>{item.sectionId}</td>
+                      <td>
+                        {editedIndex === index ? (
+                          <select
+                            value={item.deptId}
+                            onChange={(e) => {
+                              const newData = [...data];
+                              newData[index].deptId = e.target.value;
+                              setData(newData);
+                            }}
+                            style={{
+                              border: "none",
+                              //       width: "100px",
+                              height: "20px",
+                              backgroundColor: "whitesmoke",
                             }}
                           >
-                            <DialogTitle id="alert-dialog-title">
-                              {/* {"Taxonalytica"} */}
-                            </DialogTitle>
-                            <DialogContent>
-                              <DialogContentText id="alert-dialog-description">
-                                Are you sure you want to delete?
-                              </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                              <Button
-                              onClick={(e) =>
-                                handledelete(e)
+                            <option hidden>Please Select</option>
+                            {department.map((item) => (
+                              <option>{item.deptId}</option>
+                            ))}
+                          </select>
+                        ) : (
+                          <div>{item.deptId}</div>
+                        )}
+                      </td>
+                      <td>
+                        {editedIndex === index ? (
+                          <input
+                            value={item.sectionName}
+                            onChange={(e) => {
+                              const newData = [...data];
+                              newData[index].sectionName = e.target.value;
+                              setData(newData);
+                            }}
+                            style={{
+                              border: "none",
+                              //       width: "100px",
+                              height: "20px",
+                              backgroundColor: "whitesmoke",
+                            }}
+                          />
+                        ) : (
+                          <div>{item.sectionName}</div>
+                        )}
+                      </td>
+                      <td style={{ textAlign: "center" }}>
+                        {editedIndex === index ? (
+                          <>
+                            <button
+                              style={{
+                                border: "none",
+                                backgroundColor: "transparent",
+                              }}
+                              onClick={removeEdit}
+                            >
+                              <FaXmark id="FaMinus" />
+                            </button>
+                          </>
+                        ) : (
+                          <span>
+                            <button
+                              style={{
+                                border: "none",
+                                backgroundColor: "transparent",
+                              }}
+                              onClick={() =>
+                                handleClickdeletepopup(item.sectionId)
                               }
+                            >
+                              <FaMinus id="FaMinus" />
+                            </button>
+                            <React.Fragment>
+                              <Dialog
+                                open={opendeletepopup}
+                                onClose={handleDeleteClose}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                                PaperProps={{
+                                  style: {
+                                    marginTop: -350, // Adjust the marginTop value as needed
+                                    width: "40%",
+                                  },
+                                }}
                               >
-                                Yes
-                              </Button>
-                              <Button onClick={handleDeleteClose}>No</Button>
-                            </DialogActions>
-                          </Dialog>
-                        </React.Fragment>
-                      </span>
-                    )}
-                    &nbsp;&nbsp;
-                    {editedIndex === index ? (
-                      <>
-                        <button
-                          style={{
-                            border: "none",
-                            backgroundColor: "transparent",
-                          }}
-                          onClick={(e) => handleSave(e,item.sectionId)}
-                        >
-                          <FaCheck id="FaCheck" />
-                        </button>
-                      </>
-                    ) : (
-                      <button
-                        style={{
-                          border: "none",
-                          backgroundColor: "transparent",
-                        }}
-                        onClick={() => handleEdit(index)}
-                      >
-                        <FaEdit id="FaEdit" />
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
+                                <DialogTitle id="alert-dialog-title">
+                                  {/* {"Taxonalytica"} */}
+                                </DialogTitle>
+                                <DialogContent>
+                                  <DialogContentText id="alert-dialog-description">
+                                    Are you sure you want to delete?
+                                  </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                  <Button onClick={(e) => handledelete(e)}>
+                                    Yes
+                                  </Button>
+                                  <Button onClick={handleDeleteClose}>
+                                    No
+                                  </Button>
+                                </DialogActions>
+                              </Dialog>
+                            </React.Fragment>
+                          </span>
+                        )}
+                        &nbsp;&nbsp;
+                        {editedIndex === index ? (
+                          <>
+                            <button
+                              style={{
+                                border: "none",
+                                backgroundColor: "transparent",
+                              }}
+                              onClick={(e) => handleSave(e, item.sectionId)}
+                            >
+                              <FaCheck id="FaCheck" />
+                            </button>
+                          </>
+                        ) : (
+                          <button
+                            style={{
+                              border: "none",
+                              backgroundColor: "transparent",
+                            }}
+                            onClick={() => handleEdit(index)}
+                          >
+                            <FaEdit id="FaEdit" />
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
             </tbody>
           </table>
         </div>

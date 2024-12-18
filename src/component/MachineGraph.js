@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import axios from "axios";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants";
 
-function MachineGraphs({AllJobs,AllNodes}) {
+function MachineGraphs({ AllJobs, AllNodes }) {
   const [batchmasterdata, setBatchMasterdata] = useState([]);
   const [splitdate, setSplitDate] = useState([]);
   const [Assignedsplitdate, setAssignedSplitDate] = useState([]);
   const [color, setColor] = useState([]);
   const [Assignedcolor, setAssignedcolor] = useState([]);
   const [Combinedjobs, setCombinedjobs] = useState([]);
-  
+
   useEffect(() => {
     const apiUrl = `${BASE_URL}/api/batchMaster`;
     axios
       .get(apiUrl)
       .then((response) => {
-        
         setBatchMasterdata(response.data);
       })
       .catch((error) => {
@@ -24,18 +23,29 @@ function MachineGraphs({AllJobs,AllNodes}) {
       });
   }, []);
 
-  const NodeCompletedJobs = AllJobs.filter((item) => item?.nodeId == AllNodes)
-  const NodeAssignedJobs = AllJobs.filter((item) => item?.node?.nodeId == AllNodes)
+  const NodeCompletedJobs = AllJobs.filter((item) => item?.nodeId == AllNodes);
+  const NodeAssignedJobs = AllJobs.filter(
+    (item) => item?.node?.nodeId == AllNodes
+  );
 
   useEffect(() => {
     // Update splitdate array whenever dateandNode changes
     setSplitDate(NodeCompletedJobs.map((item) => item.date.split("-")[2]));
-    setAssignedSplitDate(NodeAssignedJobs.map((item) => item.date.split("-")[2]));
+    setAssignedSplitDate(
+      NodeAssignedJobs.map((item) => item.date.split("-")[2])
+    );
     // Update color array whenever dateandNode changes
-    setColor(NodeCompletedJobs.map((item) => (item.status === "Assigned" ? "blue" : "green")));
-    setAssignedcolor(NodeAssignedJobs.map((item) => (item.activityType === "ON" ? "green" : "blue")));
+    setColor(
+      NodeCompletedJobs.map((item) =>
+        item.status === "Assigned" ? "blue" : "green"
+      )
+    );
+    setAssignedcolor(
+      NodeAssignedJobs.map((item) =>
+        item.activityType === "ON" ? "green" : "blue"
+      )
+    );
   }, []);
-
 
   // Create an object to store y values for each unique job ID on each day
   const yValuesMap = {};
@@ -46,60 +56,65 @@ function MachineGraphs({AllJobs,AllNodes}) {
     const jobId = item.jobId;
     const day = item.date.split("-")[2];
     const y = item.jobId;
-  
-  if (!yValuesMap[nodeId]) {
-    yValuesMap[nodeId] = {};
-  }
 
-  if (!yValuesMap[nodeId][day]) {
-    yValuesMap[nodeId][day] = {};
-  }
+    if (!yValuesMap[nodeId]) {
+      yValuesMap[nodeId] = {};
+    }
 
-  if (!yValuesMap[nodeId][day][jobId]) {
-    yValuesMap[nodeId][day][jobId] = [y];
-  } else {
-    yValuesMap[nodeId][day][jobId].push(y + yValuesMap[nodeId][day][jobId].length * 0.15); // Add a small offset
-  }
-});
+    if (!yValuesMap[nodeId][day]) {
+      yValuesMap[nodeId][day] = {};
+    }
 
-// Flatten the y values for plotting
-const flattenedYValues = Object.values(yValuesMap).flatMap((node) =>
-  Object.values(node).flatMap((day) =>
-    Object.values(day).flatMap((job) => job)
-  )
-);
+    if (!yValuesMap[nodeId][day][jobId]) {
+      yValuesMap[nodeId][day][jobId] = [y];
+    } else {
+      yValuesMap[nodeId][day][jobId].push(
+        y + yValuesMap[nodeId][day][jobId].length * 0.15
+      ); // Add a small offset
+    }
+  });
 
-NodeAssignedJobs.forEach((item) => {
-  const nodeId = item?.node?.nodeId;
-  const jobId = item.jobId;
-  const day = item.date.split("-")[2];
-  const y = item.jobId;
+  // Flatten the y values for plotting
+  const flattenedYValues = Object.values(yValuesMap).flatMap((node) =>
+    Object.values(node).flatMap((day) =>
+      Object.values(day).flatMap((job) => job)
+    )
+  );
 
-if (!yValuesAssifnedMap[nodeId]) {
-  yValuesAssifnedMap[nodeId] = {};
-}
+  NodeAssignedJobs.forEach((item) => {
+    const nodeId = item?.node?.nodeId;
+    const jobId = item.jobId;
+    const day = item.date.split("-")[2];
+    const y = item.jobId;
 
-if (!yValuesAssifnedMap[nodeId][day]) {
-  yValuesAssifnedMap[nodeId][day] = {};
-}
+    if (!yValuesAssifnedMap[nodeId]) {
+      yValuesAssifnedMap[nodeId] = {};
+    }
 
-if (!yValuesAssifnedMap[nodeId][day][jobId]) {
-  yValuesAssifnedMap[nodeId][day][jobId] = [y];
-} else {
-  yValuesAssifnedMap[nodeId][day][jobId].push(y + yValuesAssifnedMap[nodeId][day][jobId].length * 0.15); // Add a small offset
-}
-});
+    if (!yValuesAssifnedMap[nodeId][day]) {
+      yValuesAssifnedMap[nodeId][day] = {};
+    }
 
-// Flatten the y values for plotting
-const flattenedYAssignedValues = Object.values(yValuesAssifnedMap).flatMap((node) =>
-Object.values(node).flatMap((day) =>
-  Object.values(day).flatMap((job) => job)
-)
-);
+    if (!yValuesAssifnedMap[nodeId][day][jobId]) {
+      yValuesAssifnedMap[nodeId][day][jobId] = [y];
+    } else {
+      yValuesAssifnedMap[nodeId][day][jobId].push(
+        y + yValuesAssifnedMap[nodeId][day][jobId].length * 0.15
+      ); // Add a small offset
+    }
+  });
 
-// Check if flattenedYValues and flattenedYAssignedValues arrays are empty
-// const showXAxis = flattenedYValues.length > 0;
-// const showYAxis = flattenedYAssignedValues.length > 0;
+  // Flatten the y values for plotting
+  const flattenedYAssignedValues = Object.values(yValuesAssifnedMap).flatMap(
+    (node) =>
+      Object.values(node).flatMap((day) =>
+        Object.values(day).flatMap((job) => job)
+      )
+  );
+
+  // Check if flattenedYValues and flattenedYAssignedValues arrays are empty
+  // const showXAxis = flattenedYValues.length > 0;
+  // const showYAxis = flattenedYAssignedValues.length > 0;
 
   return (
     <div
@@ -122,7 +137,6 @@ Object.values(node).flatMap((day) =>
             marker: {
               size: 8, // Adjust the size of markers as per your preference
               color: color,
-              
             },
             type: "scatter",
           },

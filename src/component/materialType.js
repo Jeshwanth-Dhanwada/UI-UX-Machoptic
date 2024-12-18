@@ -20,7 +20,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 
@@ -670,7 +670,7 @@ function MaterialType() {
                   {/* <FaCheck /> */}Add
                 </button>
                 &nbsp;
-                <a className="btn  btn-sm"  nClick={emptyfields}>
+                <a className="btn  btn-sm" nClick={emptyfields}>
                   {/* <FaXmark /> */}Cancel
                 </a>
               </div>

@@ -61,7 +61,7 @@ function DashboardLayout(props) {
   const [edges, setEdges] = useState([]); // Make sure to initialize this state properly
   const [nodes, setNodes] = useState([]); // Make sure to initialize this state properly
   const width = isSideBarExpanded ? "100%" : "95%";
-  const marginLeft = isSideBarExpanded ? `calc(20% + 8px)` : "73px";
+  const marginLeft = isSideBarExpanded ? `calc(20% + 8px)` : "60px";
   const footerHeight = isExpandedFull ? "55%" : "10%";
   // const IconfooterHeight = isExpandedFull ? "100%" : "10%";
 
@@ -168,19 +168,12 @@ function DashboardLayout(props) {
     settableHeight(height);
   };
 
-  const [dateFilter,setDateFilter] = useState()
+  const [dateFilter, setDateFilter] = useState();
 
   const HandleDateFiltering = (date) => {
-    console.log(date,"dateFilter")
-    setDateFilter(date)
-  }
-
-  // const HandleMultipleJobsToRoutes = (multipleJobs) => {
-  //   console.log(multipleJobs,)
-  // }
-
-  // const location = useLocation(); // Get the current route
-  // const hideComponents = location.pathname === '/Login'; // Determine if the current route is the login page
+    console.log(date, "dateFilter");
+    setDateFilter(date);
+  };
 
   return (
     <Router>
@@ -195,7 +188,7 @@ function DashboardLayout(props) {
         <AppBarContainer
           class="sticky-top"
           selectedMenuItem={selectedMenuItem}
-          setDate = {HandleDateFiltering}
+          setDate={HandleDateFiltering}
         />
       )}
       <br />
@@ -222,6 +215,7 @@ function DashboardLayout(props) {
             className="dashboard-container"
             style={{ height: footerHeight, display: "inline-flex" }}
           >
+            {/* this slider is used to resize height of the bottom section i.e the administration table */}
             <Slider
               isExpandedFull={isExpandedFull}
               setIsExpandedFull={setIsExpandedFull}
@@ -286,7 +280,7 @@ function DashboardLayout(props) {
                 tableHeight={tableHeight}
               />
             )}
-            
+
             {selectedMenuItem === "Priority Job" && (
               <JobPrioritytabs
                 JobIdtoJobPriority={JobIdtoJobPriority}

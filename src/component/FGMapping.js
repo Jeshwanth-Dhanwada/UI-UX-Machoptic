@@ -3,14 +3,12 @@ import { FaXmark, FaCheck, FaSistrix } from "react-icons/fa6";
 import { Form } from "react-bootstrap";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants";
 import AuthContext from "../context/AuthProvider";
-import CloseButton from 'react-bootstrap/CloseButton';
-
-
+import CloseButton from "react-bootstrap/CloseButton";
 
 function FGmapping() {
-  const { auth } = useContext(AuthContext)
+  const { auth } = useContext(AuthContext);
   const [data, setData] = useState([]);
   const [items, setItems] = useState([]);
   const [ERPItems, setERPItems] = useState([]);
@@ -37,9 +35,9 @@ function FGmapping() {
     axios
       .get(apiUrl, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth.accessToken}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
       })
       .then((response) => {
         // console.log(response.data)
@@ -57,14 +55,12 @@ function FGmapping() {
     // Fetch data from the API when the component mounts
     const apiUrl = `${BASE_URL}/api/mapping`;
     axios
-      .get(apiUrl,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${auth.accessToken}`
-          }
-        }
-      )
+      .get(apiUrl, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+      })
       .then((response) => {
         setFGMapping(response.data);
         // console.log(response.data);
@@ -82,9 +78,9 @@ function FGmapping() {
     axios
       .get(apiUrl, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth.accessToken}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
       })
       .then((response) => {
         // console.log("&&&", response.data);
@@ -102,9 +98,9 @@ function FGmapping() {
     axios
       .get(apiUrl, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth.accessToken}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
       })
       .then((response) => {
         // console.log("&&&", response.data);
@@ -120,9 +116,9 @@ function FGmapping() {
     axios
       .get(apiUrl, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth.accessToken}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
       })
       .then((response) => {
         // console.log("&&&", response.data);
@@ -138,9 +134,9 @@ function FGmapping() {
     axios
       .get(apiUrl, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth.accessToken}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
       })
       .then((response) => {
         // console.log("&&&", response.data);
@@ -156,9 +152,9 @@ function FGmapping() {
     axios
       .get(apiUrl, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth.accessToken}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
       })
       .then((response) => {
         setFGMapping(response.data);
@@ -174,9 +170,9 @@ function FGmapping() {
     axios
       .get(apiUrl, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth.accessToken}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
       })
       .then((response) => {
         console.log("route data", response.data);
@@ -250,11 +246,13 @@ function FGmapping() {
       //     String(item?.itemCode) === String(itemCode) &&
       //     String(item?.RMcode) === String(RMcode)
       // );
-      const existsIndragdata = Array.isArray(droppedData) && droppedData.some(
-        (item) =>
-          String(item?.itemCode) === String(itemCode) &&
-          String(item?.RMcode) === String(RMcode)
-      );
+      const existsIndragdata =
+        Array.isArray(droppedData) &&
+        droppedData.some(
+          (item) =>
+            String(item?.itemCode) === String(itemCode) &&
+            String(item?.RMcode) === String(RMcode)
+        );
 
       console.log(existsInEmpNodeMap, "RMcode");
       console.log(droppedData, "droppedData");
@@ -267,12 +265,13 @@ function FGmapping() {
         toast.warning(
           <span>
             <strong>Aww No!</strong> already Assigned to FG Mapping.
-          </span>, {
-          position: toast.POSITION.BOTTOM_RIGHT, // Set position to top center
-          // autoClose: 3000, // Optional: Set auto close time in milliseconds
-          // closeButton: false, // Optional: Hide close button
-          className: 'custom-toast' // Optional: Add custom CSS class
-        }
+          </span>,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT, // Set position to top center
+            // autoClose: 3000, // Optional: Set auto close time in milliseconds
+            // closeButton: false, // Optional: Hide close button
+            className: "custom-toast", // Optional: Add custom CSS class
+          }
         );
       }
     });
@@ -283,10 +282,9 @@ function FGmapping() {
   console.log(droppedData);
 
   const handleNewRowSubmit = () => {
-
     if (PercentWaste.length === 0) {
-      alert("Please Enter a PercentWaste value!") 
-      return
+      alert("Please Enter a PercentWaste value!");
+      return;
     }
 
     const drop = {
@@ -297,17 +295,17 @@ function FGmapping() {
         userId: auth?.empId?.toString(),
         nodeCategory: item.Rmtype,
         nodeId: item.NodeId,
-        PercentOfWaste: PercentWaste
+        PercentOfWaste: PercentWaste,
       })),
     };
-   
+
     // console.log("FG mapping drop data:", drop);
     axios
       .put(`${BASE_URL}/api/mapping/bulk`, drop, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth.accessToken}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
       })
       .then((response) => {
         // console.log("Selected rows added successfully", response.data);
@@ -319,17 +317,18 @@ function FGmapping() {
             position: toast.POSITION.BOTTOM_RIGHT, // Set position to top center
             // autoClose: 3000, // Optional: Set auto close time in milliseconds
             // closeButton: false, // Optional: Hide close button
-            className: 'custom-toast' // Optional: Add custom CSS class
+            className: "custom-toast", // Optional: Add custom CSS class
           }
         );
         setDroppedData([]);
         const apiUrl = `${BASE_URL}/api/mapping`;
-        axios.get(apiUrl, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${auth.accessToken}`
-          }
-        })
+        axios
+          .get(apiUrl, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.accessToken}`,
+            },
+          })
           .then((response) => {
             setFGMapping(response.data);
             // console.log(response.data);
@@ -337,19 +336,20 @@ function FGmapping() {
       })
       .catch((error) => {
         toast.error(
-          <span><strong>User</strong> is not authorized fot this action.</span>,
+          <span>
+            <strong>User</strong> is not authorized fot this action.
+          </span>,
           {
             position: toast.POSITION.BOTTOM_RIGHT, // Set position to top center
             // autoClose: 3000, // Optional: Set auto close time in milliseconds
             // closeButton: false, // Optional: Hide close button
-            className: 'custom-toast' // Optional: Add custom CSS class
-          });
-        setDroppedData(false)
+            className: "custom-toast", // Optional: Add custom CSS class
+          }
+        );
+        setDroppedData(false);
         console.error("Error adding selected rows:", error);
       });
   };
-
-
 
   function getNodeNameById(nodeId) {
     const nodename = data
@@ -364,7 +364,6 @@ function FGmapping() {
     setInputData([]);
     setItemRefresh(false);
   };
-
 
   // Ramesh canges for filter & search
   const searchItems = (searchValue) => {
@@ -540,15 +539,12 @@ function FGmapping() {
       );
 
       if (filledRows.length === 0) {
-        toast.error(
-          <span>Please fill at least one detail</span>,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT, // Set position to top center
-            // autoClose: 3000, // Optional: Set auto close time in milliseconds
-            // closeButton: false, // Optional: Hide close button
-            className: 'custom-toast' // Optional: Add custom CSS class
-          }
-        );
+        toast.error(<span>Please fill at least one detail</span>, {
+          position: toast.POSITION.BOTTOM_RIGHT, // Set position to top center
+          // autoClose: 3000, // Optional: Set auto close time in milliseconds
+          // closeButton: false, // Optional: Hide close button
+          className: "custom-toast", // Optional: Add custom CSS class
+        });
         return;
       }
 
@@ -564,18 +560,44 @@ function FGmapping() {
       // }
 
       updatedData = filledRows.map((item) => {
-        const { itemMapping, DateTime, NodeId, Per_Bag_wgt, mtr_per_wgt, ...newObject } = item;
+        const {
+          itemMapping,
+          DateTime,
+          NodeId,
+          Per_Bag_wgt,
+          mtr_per_wgt,
+          ...newObject
+        } = item;
         const splitdata = NodeId.split("-")[0];
         const perBagWeightString = Per_Bag_wgt?.toString();
-        const mtrPerWeight = mtr_per_wgt ? mtr_per_wgt.toString() : ''
-        return { ...newObject, NodeId: splitdata, Per_Bag_wgt: perBagWeightString, mtr_per_wgt: mtrPerWeight };
+        const mtrPerWeight = mtr_per_wgt ? mtr_per_wgt.toString() : "";
+        return {
+          ...newObject,
+          NodeId: splitdata,
+          Per_Bag_wgt: perBagWeightString,
+          mtr_per_wgt: mtrPerWeight,
+        };
       });
     } else {
-      const { itemMapping, DateTime, NodeId, Per_Bag_wgt, mtr_per_wgt, ...newObject } = inputData[index];
+      const {
+        itemMapping,
+        DateTime,
+        NodeId,
+        Per_Bag_wgt,
+        mtr_per_wgt,
+        ...newObject
+      } = inputData[index];
       const splitdata = NodeId.split("-")[0];
       const perBagWeightString = Per_Bag_wgt?.toString();
-      const mtrPerWeight = mtr_per_wgt ? mtr_per_wgt.toString() : ''
-      updatedData = [{ ...newObject, NodeId: splitdata, Per_Bag_wgt: perBagWeightString, mtr_per_wgt: mtrPerWeight }];
+      const mtrPerWeight = mtr_per_wgt ? mtr_per_wgt.toString() : "";
+      updatedData = [
+        {
+          ...newObject,
+          NodeId: splitdata,
+          Per_Bag_wgt: perBagWeightString,
+          mtr_per_wgt: mtrPerWeight,
+        },
+      ];
     }
 
     const payload = {
@@ -584,9 +606,9 @@ function FGmapping() {
     axios
       .put(`${BASE_URL}/api/itemmaster/bulk`, payload, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth.accessToken}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
       })
       .then((res) => {
         console.log(res);
@@ -598,7 +620,8 @@ function FGmapping() {
       });
 
     const fgItems = inputData.filter(
-      (item) => item?.ItemType === "Finished Goods" && item?.NodeId && item?.Route
+      (item) =>
+        item?.ItemType === "Finished Goods" && item?.NodeId && item?.Route
     );
     if (fgItems?.length > 0) {
       const updatedfg = fgItems.map((item) => {
@@ -621,29 +644,26 @@ function FGmapping() {
       axios
         .put(`${BASE_URL}/api/mapping/bulk`, fgPayLoad, {
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${auth.accessToken}`
-          }
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
         })
         .then((res) => {
           console.log(res);
           if (!singleRowSubmit) setItemRefresh(false);
           singleRowSubmit
             ? setInputData((item) => {
-              const updatedInputData = [...item];
-              updatedInputData.splice(index, 1);
-              return updatedInputData;
-            })
+                const updatedInputData = [...item];
+                updatedInputData.splice(index, 1);
+                return updatedInputData;
+              })
             : setInputData([]);
-          toast.success(
-            <span>Details saved Successfully</span>,
-            {
-              position: toast.POSITION.BOTTOM_RIGHT, // Set position to top center
-              // autoClose: 3000, // Optional: Set auto close time in milliseconds
-              // closeButton: false, // Optional: Hide close button
-              className: 'custom-toast' // Optional: Add custom CSS class
-            }
-          );
+          toast.success(<span>Details saved Successfully</span>, {
+            position: toast.POSITION.BOTTOM_RIGHT, // Set position to top center
+            // autoClose: 3000, // Optional: Set auto close time in milliseconds
+            // closeButton: false, // Optional: Hide close button
+            className: "custom-toast", // Optional: Add custom CSS class
+          });
           setFgMapping();
         })
         .catch((err) => {
@@ -653,20 +673,17 @@ function FGmapping() {
       if (!singleRowSubmit) setItemRefresh(false);
       singleRowSubmit
         ? setInputData((item) => {
-          const updatedInputData = [...item];
-          updatedInputData.splice(index, 1);
-          return updatedInputData;
-        })
+            const updatedInputData = [...item];
+            updatedInputData.splice(index, 1);
+            return updatedInputData;
+          })
         : setInputData([]);
-      toast.success(
-        <span>Details saved Successfully</span>,
-        {
-          position: toast.POSITION.BOTTOM_RIGHT, // Set position to top center
-          // autoClose: 3000, // Optional: Set auto close time in milliseconds
-          // closeButton: false, // Optional: Hide close button
-          className: 'custom-toast' // Optional: Add custom CSS class
-        }
-      );
+      toast.success(<span>Details saved Successfully</span>, {
+        position: toast.POSITION.BOTTOM_RIGHT, // Set position to top center
+        // autoClose: 3000, // Optional: Set auto close time in milliseconds
+        // closeButton: false, // Optional: Hide close button
+        className: "custom-toast", // Optional: Add custom CSS class
+      });
     }
     return;
   };
@@ -675,16 +692,16 @@ function FGmapping() {
 
   // Ramesh added
   const handlePercentOfwaste = (event) => {
-    setPercentWaste(event.target.value)
-  }
+    setPercentWaste(event.target.value);
+  };
   const handleFgToRmRatio = (event) => {
-    setFgToRmRatiovalue(event.target.value)
-  }
+    setFgToRmRatiovalue(event.target.value);
+  };
 
-  const clearInput = ()=>{
-    setPercentWaste([])
-    setFgToRmRatiovalue([])
-  }
+  const clearInput = () => {
+    setPercentWaste([]);
+    setFgToRmRatiovalue([]);
+  };
 
   const handleBlur = () => {
     if (!PercentWaste) {
@@ -696,10 +713,10 @@ function FGmapping() {
 
   return (
     <aside>
-    <div className="employee-list-container">
-      {!itemRefresh ? (
-        <div className="container-fluid">
-          {/* <div className='d-flex flex-row justify-content-end m-1'>
+      <div className="employee-list-container">
+        {!itemRefresh ? (
+          <div className="container-fluid">
+            {/* <div className='d-flex flex-row justify-content-end m-1'>
             <Tooltip title="Add FG Mapping">
               <Button onClick={handleNewRowSubmit} id='addbutton' style={{ marginLeft: '5px' }}>
                 <FaPlus />
@@ -707,280 +724,308 @@ function FGmapping() {
             </Tooltip>
           </div> */}
 
-          <div className="row p-2 d-flex felx-row justify-content-center">
-            <div className="col-6">
-              <h6 style={{ textAlign: "center", fontWeight: "revert-layer" }}>
-                Finished Goods
-              </h6>
-            </div>
-            <div className="col-6">
-              <h6 style={{ textAlign: "center", fontWeight: "revert-layer" }}>
-                Raw Material
-              </h6>
-            </div>
-            <div
-              className="col-6"
-              style={{ height: "130px", overflowY: "auto" }}
-            >
-              <table className="table table-bordered table-striped">
-                <thead class="sticky-top">
-                  <tr>
-                    <th>Item Code</th>
-                    <th style={{ width: "70%" }}>
-                      Item Name
-                      {isSearchVisible ? (
-                        <div
-                          className="search-input-container"
-                          style={{
-                            position: "absolute",
-                            top: "0px",
-                            // backgroundColor: "white",
-                          }}
-                        >
-                          <input
-                            type="text"
-                            variant="outlined"
-                            value={searchInput}
-                            size="small"
-                            style={{ width: "160px",height:'25px', fontSize: "10px",marginTop:'3px'}}
-                            placeholder="search Finished Goods"
-                            onChange={(e) => searchItems(e.target.value)}
-                          />
-                          <span
-                            className="clear-button"
-                            style={{ position: "absolute" }}
-                            onClick={toggleSearch}
+            <div className="row p-2 d-flex felx-row justify-content-center">
+              <div className="col-6">
+                <h6 style={{ textAlign: "center", fontWeight: "revert-layer" }}>
+                  Finished Goods
+                </h6>
+              </div>
+              <div className="col-6">
+                <h6 style={{ textAlign: "center", fontWeight: "revert-layer" }}>
+                  Raw Material
+                </h6>
+              </div>
+              <div
+                className="col-6"
+                style={{ height: "130px", overflowY: "auto" }}
+              >
+                <table className="table table-bordered table-striped">
+                  <thead class="sticky-top">
+                    <tr>
+                      <th>Item Code</th>
+                      <th style={{ width: "70%" }}>
+                        Item Name
+                        {isSearchVisible ? (
+                          <div
+                            className="search-input-container"
+                            style={{
+                              position: "absolute",
+                              top: "0px",
+                              // backgroundColor: "white",
+                            }}
                           >
-                            <FaXmark />
-                          </span>
-                        </div>
-                      ) : (
-                        <span
-                          className="search-icon-button"
-                          style={{ marginLeft: "10px" }}
-                        >
-                          <FaSistrix onClick={toggleSearch} />
-                        </span>
-                      )}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {searchInput.length > 0
-                    ? filteredResults
-                      .filter(
-                        (item) => item.ItemType === "Finished Goods"
-                        // && !Removedroppeddata.includes(item.IT_CODE)
-                        // && !RemoveExistingdata.includes(item.IT_CODE)
-                      )
-                      .map((item, index) => (
-                        <tr
-                          draggable
-                          onDragStart={(e) =>
-                            dragStarted(
-                              e,
-                              item.IT_CODE,
-                              item.IT_NAME,
-                              item.ItemType,
-                              item.Machine
-                            )
-                          }
-                        >
-                          <td>{item.IT_CODE}</td>
-                          <td>{item.IT_NAME}</td>
-                        </tr>
-                      ))
-                    : items
-                      .filter(
-                        (item) => item.ItemType === "Finished Goods"
-                        // && !Removedroppeddata.includes(item.IT_CODE)
-                        // && !RemoveExistingdata.includes(item.IT_CODE)
-                      )
-                      .map((item, index) => (
-                        <tr
-                          draggable
-                          onDragStart={(e) =>
-                            dragStarted(
-                              e,
-                              item.IT_CODE,
-                              item.IT_NAME,
-                              item.ItemType,
-                              item.Machine
-                            )
-                          }
-                        >
-                          <td>{item.IT_CODE}</td>
-                          <td>{item.IT_NAME}</td>
-                        </tr>
-                      ))}
-                </tbody>
-              </table>
-            </div>
-            <div
-              className="col-6"
-              style={{ height: "130px", overflowY: "auto" }}
-            >
-              <table className="table table-bordered table-striped">
-                <thead class="sticky-top">
-                  <tr>
-                    <th style={{ width: "20%" }}>Item Code</th>
-                    <th style={{ width: "45%" }}>
-                      Item Name
-                      {isNodeSearchVisible ? (
-                        <div
-                          className="search-input-container"
-                          style={{
-                            position: "absolute",
-                            top: "0px",
-                            // backgroundColor: "white",
-                          }}
-                        >
-                          <input
-                            type="text"
-                            variant="outlined"
-                            value={NodesearchInput}
-                            size="small"
-                            style={{ width: "155px",height:'25px', fontSize: "10px",marginTop:'3px' }}
-                            placeholder="search Raw Material"
-                            onChange={(e) => searchNodesItems(e.target.value)}
-                          />
+                            <input
+                              type="text"
+                              variant="outlined"
+                              value={searchInput}
+                              size="small"
+                              style={{
+                                width: "160px",
+                                height: "25px",
+                                fontSize: "10px",
+                                marginTop: "3px",
+                              }}
+                              placeholder="search Finished Goods"
+                              onChange={(e) => searchItems(e.target.value)}
+                            />
+                            <span
+                              className="clear-button"
+                              style={{ position: "absolute" }}
+                              onClick={toggleSearch}
+                            >
+                              <FaXmark />
+                            </span>
+                          </div>
+                        ) : (
                           <span
-                            className="clear-button"
-                            onClick={toggleNodeSearch}
+                            className="search-icon-button"
+                            style={{ marginLeft: "10px" }}
                           >
-                            <FaXmark />
+                            <FaSistrix onClick={toggleSearch} />
                           </span>
-                        </div>
-                      ) : (
-                        <span
-                          className="search-icon-button"
-                          style={{ marginLeft: "10px" }}
-                        >
-                          <FaSistrix onClick={toggleNodeSearch} />
-                        </span>
-                      )}
-                    </th>
-                    <th>Node Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {NodesearchInput.length > 0
-                    ? NodefilteredResults.filter(
-                      (item) =>
-                        item.ItemType === "Raw Material" ||
-                        item.ItemType === "RM-Film" ||
-                        item.ItemType === "RM-Fabric"
-                    ).map((item, index) => (
-                      <tr
-                        onDragOver={(e) => draggingOver(e)}
-                        onDrop={(e) =>
-                          dragDropped(
-                            e,
-                            item.IT_CODE,
-                            item.IT_NAME,
-                            item.ItemType,
-                            item.Machine,
-                            item.NodeId
+                        )}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {searchInput.length > 0
+                      ? filteredResults
+                          .filter(
+                            (item) => item.ItemType === "Finished Goods"
+                            // && !Removedroppeddata.includes(item.IT_CODE)
+                            // && !RemoveExistingdata.includes(item.IT_CODE)
                           )
-                        }
-                        key={item.IT_CODE}
-                      >
-                        <td>{item.IT_CODE}</td>
-                        <td>{item.IT_NAME}</td>
-                        <td>{getNodeNameById(item.NodeId)}</td>
-                      </tr>
-                    ))
-                    : items
-                      .filter(
-                        (item) =>
-                          item.ItemType === "Raw Material" ||
-                          item.ItemType === "RM-Film" ||
-                          item.ItemType === "RM-Fabric"
-                      )
-                      .map((item, index) => (
-                        <tr
-                          onDragOver={(e) => draggingOver(e)}
-                          onDrop={(e) =>
-                            dragDropped(
-                              e,
-                              item.IT_CODE,
-                              item.IT_NAME,
-                              item.ItemType,
-                              item.Machine,
-                              item.NodeId
-                            )
-                          }
-                          key={item.IT_CODE}
-                        >
-                          <td>{item.IT_CODE}</td>
-                          <td>{item.IT_NAME}</td>
-                          <td>{getNodeNameById(item.NodeId)}</td>
-                        </tr>
-                      ))}
-                </tbody>
-              </table>
+                          .map((item, index) => (
+                            <tr
+                              draggable
+                              onDragStart={(e) =>
+                                dragStarted(
+                                  e,
+                                  item.IT_CODE,
+                                  item.IT_NAME,
+                                  item.ItemType,
+                                  item.Machine
+                                )
+                              }
+                            >
+                              <td>{item.IT_CODE}</td>
+                              <td>{item.IT_NAME}</td>
+                            </tr>
+                          ))
+                      : items
+                          .filter(
+                            (item) => item.ItemType === "Finished Goods"
+                            // && !Removedroppeddata.includes(item.IT_CODE)
+                            // && !RemoveExistingdata.includes(item.IT_CODE)
+                          )
+                          .map((item, index) => (
+                            <tr
+                              draggable
+                              onDragStart={(e) =>
+                                dragStarted(
+                                  e,
+                                  item.IT_CODE,
+                                  item.IT_NAME,
+                                  item.ItemType,
+                                  item.Machine
+                                )
+                              }
+                            >
+                              <td>{item.IT_CODE}</td>
+                              <td>{item.IT_NAME}</td>
+                            </tr>
+                          ))}
+                  </tbody>
+                </table>
+              </div>
+              <div
+                className="col-6"
+                style={{ height: "130px", overflowY: "auto" }}
+              >
+                <table className="table table-bordered table-striped">
+                  <thead class="sticky-top">
+                    <tr>
+                      <th style={{ width: "20%" }}>Item Code</th>
+                      <th style={{ width: "45%" }}>
+                        Item Name
+                        {isNodeSearchVisible ? (
+                          <div
+                            className="search-input-container"
+                            style={{
+                              position: "absolute",
+                              top: "0px",
+                              // backgroundColor: "white",
+                            }}
+                          >
+                            <input
+                              type="text"
+                              variant="outlined"
+                              value={NodesearchInput}
+                              size="small"
+                              style={{
+                                width: "155px",
+                                height: "25px",
+                                fontSize: "10px",
+                                marginTop: "3px",
+                              }}
+                              placeholder="search Raw Material"
+                              onChange={(e) => searchNodesItems(e.target.value)}
+                            />
+                            <span
+                              className="clear-button"
+                              onClick={toggleNodeSearch}
+                            >
+                              <FaXmark />
+                            </span>
+                          </div>
+                        ) : (
+                          <span
+                            className="search-icon-button"
+                            style={{ marginLeft: "10px" }}
+                          >
+                            <FaSistrix onClick={toggleNodeSearch} />
+                          </span>
+                        )}
+                      </th>
+                      <th>Node Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {NodesearchInput.length > 0
+                      ? NodefilteredResults.filter(
+                          (item) =>
+                            item.ItemType === "Raw Material" ||
+                            item.ItemType === "RM-Film" ||
+                            item.ItemType === "RM-Fabric"
+                        ).map((item, index) => (
+                          <tr
+                            onDragOver={(e) => draggingOver(e)}
+                            onDrop={(e) =>
+                              dragDropped(
+                                e,
+                                item.IT_CODE,
+                                item.IT_NAME,
+                                item.ItemType,
+                                item.Machine,
+                                item.NodeId
+                              )
+                            }
+                            key={item.IT_CODE}
+                          >
+                            <td>{item.IT_CODE}</td>
+                            <td>{item.IT_NAME}</td>
+                            <td>{getNodeNameById(item.NodeId)}</td>
+                          </tr>
+                        ))
+                      : items
+                          .filter(
+                            (item) =>
+                              item.ItemType === "Raw Material" ||
+                              item.ItemType === "RM-Film" ||
+                              item.ItemType === "RM-Fabric"
+                          )
+                          .map((item, index) => (
+                            <tr
+                              onDragOver={(e) => draggingOver(e)}
+                              onDrop={(e) =>
+                                dragDropped(
+                                  e,
+                                  item.IT_CODE,
+                                  item.IT_NAME,
+                                  item.ItemType,
+                                  item.Machine,
+                                  item.NodeId
+                                )
+                              }
+                              key={item.IT_CODE}
+                            >
+                              <td>{item.IT_CODE}</td>
+                              <td>{item.IT_NAME}</td>
+                              <td>{getNodeNameById(item.NodeId)}</td>
+                            </tr>
+                          ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-          <div className="row p-2 d-flex felx-row justify-content-center">
-            <br />
-            <div className="col-6">
-              <h6 style={{ textAlign: "center", fontWeight: "revert-layer" }}>
-                Finished Goods Mapping
-              </h6>
-            </div>
-            <div
-              className="col-12"
-              style={{ height: "130px", overflowY: "auto" }}
-            >
-              <table className="table table-bordered table-striped">
-                <thead class="sticky-top">
-                  <tr>
-                    <th style={{ width: "135px" }}>Item Code(FG)</th>
-                    <th style={{ width: "220px" }}>Item Name</th>
-                    <th style={{ width: "135px" }}>Item Code(RM)</th>
-                    <th style={{ width: "220px" }}>Item Name</th>
-                    <th style={{ width: "140px" }}>Item Type</th>
-                    <th style={{ width: "220px" }}>%Of Waste</th>
-                    <th style={{ width: "140px" }}>FgToRmRatio</th>
-                    <th style={{ width: "130px" }}>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {droppedData
-                    ? droppedData.map((item) => (
-                      <tr>
-                        <td>{item.itemCode}</td>
-                        <td>{item.itemName}</td>
-                        <td>{item.RMcode}</td>
-                        <td>{item.RMname}</td>
-                        <td>{item.Rmtype}</td>
-                        <td>
-                          <Form.Control min={0} onBlur={handleBlur}
-                           required type="number" value={PercentWaste}
-                            onChange={handlePercentOfwaste}  />
-                        </td>
-                        <td>
-                          <Form.Control type="number" min={0} value={FgToRmRatiovalue} onChange={handleFgToRmRatio} />
-                        </td>
-                        <td style={{textAlign:'center'}} className="justify-items-center">
-                          {/* <div className="d-flex justify-items-center"> */}
-                            {/* <button onClick={() => setDroppedData([])} style={{ border: "none",background:'transparent' }}><CloseButton onClick={()=> clearInput()} title="Cancel" variant="blue" /></button> */}
-                            <FaXmark onClick={()=> clearInput()} title="Cancel" id="FaMinus"/> &nbsp;
-                            {/* <button onClick={() => { handleNewRowSubmit() }} style={{ border: "none", background: "transparent" }}><FaCheck title="Save" color="green" /></button> */}
-                            <FaCheck title="Save" id="FaCheck" />
-                          {/* </div> */}
-                        </td>
-                      </tr>
-                    ))
-                    : ""}
-                </tbody>
-              </table>
-            </div>
-            <div className="row">
-              <div className="p-1 col-12">
-                {showbuttons ? (
-                  <div>
-                    {/* <button
+            <div className="row p-2 d-flex felx-row justify-content-center">
+              <br />
+              <div className="col-6">
+                <h6 style={{ textAlign: "center", fontWeight: "revert-layer" }}>
+                  Finished Goods Mapping
+                </h6>
+              </div>
+              <div
+                className="col-12"
+                style={{ height: "130px", overflowY: "auto" }}
+              >
+                <table className="table table-bordered table-striped">
+                  <thead class="sticky-top">
+                    <tr>
+                      <th style={{ width: "135px" }}>Item Code(FG)</th>
+                      <th style={{ width: "220px" }}>Item Name</th>
+                      <th style={{ width: "135px" }}>Item Code(RM)</th>
+                      <th style={{ width: "220px" }}>Item Name</th>
+                      <th style={{ width: "140px" }}>Item Type</th>
+                      <th style={{ width: "220px" }}>%Of Waste</th>
+                      <th style={{ width: "140px" }}>FgToRmRatio</th>
+                      <th style={{ width: "130px" }}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {droppedData
+                      ? droppedData.map((item) => (
+                          <tr>
+                            <td>{item.itemCode}</td>
+                            <td>{item.itemName}</td>
+                            <td>{item.RMcode}</td>
+                            <td>{item.RMname}</td>
+                            <td>{item.Rmtype}</td>
+                            <td>
+                              <Form.Control
+                                min={0}
+                                onBlur={handleBlur}
+                                required
+                                type="number"
+                                value={PercentWaste}
+                                onChange={handlePercentOfwaste}
+                              />
+                            </td>
+                            <td>
+                              <Form.Control
+                                type="number"
+                                min={0}
+                                value={FgToRmRatiovalue}
+                                onChange={handleFgToRmRatio}
+                              />
+                            </td>
+                            <td
+                              style={{ textAlign: "center" }}
+                              className="justify-items-center"
+                            >
+                              {/* <div className="d-flex justify-items-center"> */}
+                              {/* <button onClick={() => setDroppedData([])} style={{ border: "none",background:'transparent' }}><CloseButton onClick={()=> clearInput()} title="Cancel" variant="blue" /></button> */}
+                              <FaXmark
+                                onClick={() => clearInput()}
+                                title="Cancel"
+                                id="FaMinus"
+                              />{" "}
+                              &nbsp;
+                              {/* <button onClick={() => { handleNewRowSubmit() }} style={{ border: "none", background: "transparent" }}><FaCheck title="Save" color="green" /></button> */}
+                              <FaCheck title="Save" id="FaCheck" />
+                              {/* </div> */}
+                            </td>
+                          </tr>
+                        ))
+                      : ""}
+                  </tbody>
+                </table>
+              </div>
+              <div className="row">
+                <div className="p-1 col-12">
+                  {showbuttons ? (
+                    <div>
+                      {/* <button
                       className="btn"
                       style={{backgroundColor:'#034661',color:'#ffffff'}}
                       onClick={handleNewRowSubmit}
@@ -995,287 +1040,290 @@ function FGmapping() {
                     >
                       Cancel
                     </button> */}
-                  </div>
-                ) : (
-                  <div>
-                    <button
-                      disabled
-                      className="btn btn-success"
-                      onClick={handleNewRowSubmit}
-                    >
-                      <FaCheck />
-                    </button>
-                    &nbsp;&nbsp;
-                    <button
-                      disabled
-                      className="btn btn-danger"
-                      onClick={() => setDroppedData([])}
-                    >
-                      <FaXmark />
-                    </button>
-                  </div>
-                )}
+                    </div>
+                  ) : (
+                    <div>
+                      <button
+                        disabled
+                        className="btn btn-success"
+                        onClick={handleNewRowSubmit}
+                      >
+                        <FaCheck />
+                      </button>
+                      &nbsp;&nbsp;
+                      <button
+                        disabled
+                        className="btn btn-danger"
+                        onClick={() => setDroppedData([])}
+                      >
+                        <FaXmark />
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <ToastContainer />
               </div>
-              <ToastContainer />
             </div>
           </div>
-        </div>
-      ) : (
-        <div>
-          {showPopup === -1 && (
-            <>
-              <button className="btn btn-primary" onClick={CancelSubmit}>
-                Go Back
-              </button>
-              <div className="d-flex col-lg-12 col-md-8 col-sm-12 pt-3 justify-content-center">
-                <table
-                  class="table-bordered tablestriped"
-                  cellPadding={5}
-                  cellSpacing={5}
-                >
-                  <thead>
-                    <tr>
-                      <th style={{ width: "" }}>Item Code</th>
-                      <th style={{ width: "" }}>Item Name </th>
-                      <th style={{ width: "" }}>Item Type</th>
-                      <th style={{ width: "" }}>Node Id</th>
-                      <th style={{ width: "" }}>Routes</th>
-                      <th style={{ width: "" }}>Item Mapping</th>
-                      <th style={{ width: "" }}></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {inputData?.map((item, index) => (
-                      <tr key="">
-                        <td>{item?.IT_CODE}</td>
-                        <td>{item?.IT_NAME}</td>
-                        <td>
-                          <Form.Select
-                            className="form-control mt-1"
-                            id="itemType"
-                            name="itemType"
-                            onChange={(event) =>
-                              handleItemType(event, item, index)
-                            }
-                            value={item?.ItemType}
-                          >
-                            <option
-                              value={
-                                item?.Film_Name_ID && item?.Fabric_Name_ID
-                                  ? "Finished Goods"
-                                  : "Raw Material"
+        ) : (
+          <div>
+            {showPopup === -1 && (
+              <>
+                <button className="btn btn-primary" onClick={CancelSubmit}>
+                  Go Back
+                </button>
+                <div className="d-flex col-lg-12 col-md-8 col-sm-12 pt-3 justify-content-center">
+                  <table
+                    class="table-bordered tablestriped"
+                    cellPadding={5}
+                    cellSpacing={5}
+                  >
+                    <thead>
+                      <tr>
+                        <th style={{ width: "" }}>Item Code</th>
+                        <th style={{ width: "" }}>Item Name </th>
+                        <th style={{ width: "" }}>Item Type</th>
+                        <th style={{ width: "" }}>Node Id</th>
+                        <th style={{ width: "" }}>Routes</th>
+                        <th style={{ width: "" }}>Item Mapping</th>
+                        <th style={{ width: "" }}></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {inputData?.map((item, index) => (
+                        <tr key="">
+                          <td>{item?.IT_CODE}</td>
+                          <td>{item?.IT_NAME}</td>
+                          <td>
+                            <Form.Select
+                              className="form-control mt-1"
+                              id="itemType"
+                              name="itemType"
+                              onChange={(event) =>
+                                handleItemType(event, item, index)
                               }
-                              hidden
+                              value={item?.ItemType}
                             >
-                              {item?.Film_Name_ID && item?.Fabric_Name_ID
-                                ? "Finished Goods"
-                                : "Raw Material"}
-                            </option>
-                            <option>Raw Material</option>
-                            <option>Finished Goods</option>
-                          </Form.Select>
-                        </td>
-                        <td>
-                          <Form.Select
-                            className="form-control mt-1"
-                            id="nodeId"
-                            name="nodeId"
-                            onChange={(event) =>
-                              handleNodeIdChange(event, item, index)
-                            }
-                            value={item?.NodeId}
-                            required
-                          >
-                            <option value="" hidden>
-                              Please Select
-                            </option>
-                            {getNodeData().map((item) => (
-                              <option>
-                                {item.nodeId + "-" + item?.nodeName}
+                              <option
+                                value={
+                                  item?.Film_Name_ID && item?.Fabric_Name_ID
+                                    ? "Finished Goods"
+                                    : "Raw Material"
+                                }
+                                hidden
+                              >
+                                {item?.Film_Name_ID && item?.Fabric_Name_ID
+                                  ? "Finished Goods"
+                                  : "Raw Material"}
                               </option>
-                            ))}
-                          </Form.Select>
-                        </td>
-                        <td>
-                          <Form.Select
-                            className="form-control mt-1"
-                            id="routeId"
-                            name="routeId"
-                            onChange={(event) =>
-                              handleRouteId(event, item, index)
-                            }
-                            value={item?.Route}
-                            required
-                            disabled={item?.ItemType != "Finished Goods"}
-                          >
-                            <option value="" hidden>
-                              Please Select
-                            </option>
-                            {routeMasterData.map((item) => (
-                              <option>{item.routeId} - {item.productCategory}</option>
-                            ))}
-                          </Form.Select>
-                        </td>
-                        <td>
-                          <button
-                            className="btn btn-primary btn-sm"
-                            style={{ width: "150px", height: "40px" }}
-                            onClick={() => {
-                              setRMDetail(item);
-                              setShowPopup(index);
-                            }}
-                            disabled={
-                              item?.ItemType != "Finished Goods" ||
-                              !item?.Route ||
-                              !item?.NodeId
-                            }
-                          >
-                            Item Mapping
-                          </button>
-                        </td>
-                        <td>
-                          <div style={{ display: "flex" }}>
+                              <option>Raw Material</option>
+                              <option>Finished Goods</option>
+                            </Form.Select>
+                          </td>
+                          <td>
+                            <Form.Select
+                              className="form-control mt-1"
+                              id="nodeId"
+                              name="nodeId"
+                              onChange={(event) =>
+                                handleNodeIdChange(event, item, index)
+                              }
+                              value={item?.NodeId}
+                              required
+                            >
+                              <option value="" hidden>
+                                Please Select
+                              </option>
+                              {getNodeData().map((item) => (
+                                <option>
+                                  {item.nodeId + "-" + item?.nodeName}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </td>
+                          <td>
+                            <Form.Select
+                              className="form-control mt-1"
+                              id="routeId"
+                              name="routeId"
+                              onChange={(event) =>
+                                handleRouteId(event, item, index)
+                              }
+                              value={item?.Route}
+                              required
+                              disabled={item?.ItemType != "Finished Goods"}
+                            >
+                              <option value="" hidden>
+                                Please Select
+                              </option>
+                              {routeMasterData.map((item) => (
+                                <option>
+                                  {item.routeId} - {item.productCategory}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </td>
+                          <td>
                             <button
-                              className="btn btn-success btn-sm"
-                              onClick={() => handleSubmit(true, index)}
+                              className="btn btn-primary btn-sm"
+                              style={{ width: "150px", height: "40px" }}
+                              onClick={() => {
+                                setRMDetail(item);
+                                setShowPopup(index);
+                              }}
                               disabled={
-                                item?.ItemType === "Finished Goods"
-                                  ? !item?.Route || !item?.NodeId
-                                  : !item?.NodeId ||
-                                    item?.ItemType === "Raw Material"
+                                item?.ItemType != "Finished Goods" ||
+                                !item?.Route ||
+                                !item?.NodeId
+                              }
+                            >
+                              Item Mapping
+                            </button>
+                          </td>
+                          <td>
+                            <div style={{ display: "flex" }}>
+                              <button
+                                className="btn btn-success btn-sm"
+                                onClick={() => handleSubmit(true, index)}
+                                disabled={
+                                  item?.ItemType === "Finished Goods"
+                                    ? !item?.Route || !item?.NodeId
+                                    : !item?.NodeId ||
+                                      item?.ItemType === "Raw Material"
                                     ? !item?.NodeId
                                     : ""
-                                // (item?.ItemType === 'Raw Material' && item?.NodeId === '')
-                              }
-                            >
-                              <FaCheck />
-                            </button>
+                                  // (item?.ItemType === 'Raw Material' && item?.NodeId === '')
+                                }
+                              >
+                                <FaCheck />
+                              </button>
 
-                            {/* <button className="btn btn-danger btn-sm"><FaMinus/></button> */}
-                          </div>
+                              {/* <button className="btn btn-danger btn-sm"><FaMinus/></button> */}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="bank-details-btn mt-4">
+                  <button
+                    disabled
+                    // type="submit"
+                    onClick={() => handleSubmit(false, 0)}
+                    className="btn btn-success"
+                  >
+                    <FaCheck />
+                  </button>
+                  &nbsp;&nbsp;
+                  <button
+                    disabled
+                    // type="submit"
+                    onClick={CancelSubmit}
+                    className="btn btn-danger"
+                  >
+                    <FaXmark />
+                  </button>
+                </div>
+                <ToastContainer />
+              </>
+            )}
+          </div>
+        )}
+        {showPopup >= 0 && (
+          <div>
+            <div className="d-flex justify-content-between m-1">
+              <label style={{ width: "380px" }}>{`Finished Product: ${
+                inputData[showPopup]?.IT_CODE +
+                "-" +
+                inputData[showPopup]?.IT_NAME
+              }`}</label>
+              <label
+                style={{ width: "230px" }}
+              >{`Route ID: ${inputData[showPopup]?.Route}`}</label>
+              <label className="mt-1">Raw material </label>
+              <Form.Select
+                className="form-control"
+                id="itemMapping"
+                name="itemMapping"
+                style={{ width: "300px" }}
+                onChange={(e) => setRMType(e.target.value)}
+                value={rmType}
+                required
+              >
+                <option value="" hidden>
+                  Please Select
+                </option>
+                {/* <option >Raw Material</option> */}
+                <option>RM-Film</option>
+                <option>RM-Fabric</option>
+              </Form.Select>
+            </div>
+            <div className="d-flex col-lg-12 col-md-8 col-sm-12 pt-3 justify-content-center">
+              <table
+                class="table-bordered tablestriped"
+                cellPadding={5}
+                cellSpacing={5}
+              >
+                <thead>
+                  <tr>
+                    <th>Material</th>
+                    <th>Select </th>
+                    <th>Default</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items
+                    .filter((item) => item.ItemType === rmType)
+                    .map((item, index) => (
+                      <tr key="">
+                        <td>{item?.IT_CODE + "-" + item?.IT_NAME}</td>
+                        <td style={{ textAlign: "center" }}>
+                          <Form.Check.Input
+                            type="checkbox"
+                            name="Select"
+                            id="allocated"
+                            style={{ border: "1px solid #808080" }}
+                            checked={isChecked(item)}
+                            onChange={(e) => handleCheckBox(e, item, "select")}
+                          />
+                        </td>
+                        <td style={{ textAlign: "center" }}>
+                          <Form.Check.Input
+                            type="radio"
+                            name="Default"
+                            id="allocated"
+                            style={{ border: "1px solid #808080" }}
+                            checked={isRadioEnabled(item)}
+                            onClick={(e) => handleCheckBox(e, item, "radio")}
+                          />
                         </td>
                       </tr>
                     ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="bank-details-btn mt-4">
-                <button
-                  disabled
-                  // type="submit"
-                  onClick={() => handleSubmit(false, 0)}
-                  className="btn btn-success"
-                >
-                  <FaCheck />
-                </button>
-                &nbsp;&nbsp;
-                <button
-                  disabled
-                  // type="submit"
-                  onClick={CancelSubmit}
-                  className="btn btn-danger"
-                >
-                  <FaXmark />
-                </button>
-              </div>
-              <ToastContainer />
-            </>
-          )}
-        </div>
-      )}
-      {showPopup >= 0 && (
-        <div>
-          <div className="d-flex justify-content-between m-1">
-            <label style={{ width: "380px" }}>{`Finished Product: ${inputData[showPopup]?.IT_CODE +
-              "-" +
-              inputData[showPopup]?.IT_NAME
-              }`}</label>
-            <label
-              style={{ width: "230px" }}
-            >{`Route ID: ${inputData[showPopup]?.Route}`}</label>
-            <label className="mt-1">Raw material </label>
-            <Form.Select
-              className="form-control"
-              id="itemMapping"
-              name="itemMapping"
-              style={{ width: "300px" }}
-              onChange={(e) => setRMType(e.target.value)}
-              value={rmType}
-              required
-            >
-              <option value="" hidden>
-                Please Select
-              </option>
-              {/* <option >Raw Material</option> */}
-              <option>RM-Film</option>
-              <option>RM-Fabric</option>
-            </Form.Select>
+                </tbody>
+              </table>
+            </div>
+            <div className="bank-details-btn m-4">
+              <button
+                // type="submit"
+                onClick={handleItemMapping}
+                className="btn btn-success"
+              >
+                <FaCheck />
+              </button>
+              &nbsp;&nbsp;
+              <button
+                // type="submit"
+                onClick={cancelItemMapping}
+                className="btn btn-danger"
+              >
+                <FaXmark />
+              </button>
+            </div>
+            <ToastContainer />
           </div>
-          <div className="d-flex col-lg-12 col-md-8 col-sm-12 pt-3 justify-content-center">
-            <table
-              class="table-bordered tablestriped"
-              cellPadding={5}
-              cellSpacing={5}
-            >
-              <thead>
-                <tr>
-                  <th>Material</th>
-                  <th>Select </th>
-                  <th>Default</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items
-                  .filter((item) => item.ItemType === rmType)
-                  .map((item, index) => (
-                    <tr key="">
-                      <td>{item?.IT_CODE + "-" + item?.IT_NAME}</td>
-                      <td style={{ textAlign: "center" }}>
-                        <Form.Check.Input
-                          type="checkbox"
-                          name="Select"
-                          id="allocated"
-                          style={{ border: "1px solid #808080" }}
-                          checked={isChecked(item)}
-                          onChange={(e) => handleCheckBox(e, item, "select")}
-                        />
-                      </td>
-                      <td style={{ textAlign: "center" }}>
-                        <Form.Check.Input
-                          type="radio"
-                          name="Default"
-                          id="allocated"
-                          style={{ border: "1px solid #808080" }}
-                          checked={isRadioEnabled(item)}
-                          onClick={(e) => handleCheckBox(e, item, "radio")}
-                        />
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="bank-details-btn m-4">
-            <button
-              // type="submit"
-              onClick={handleItemMapping}
-              className="btn btn-success"
-            >
-              <FaCheck />
-            </button>
-            &nbsp;&nbsp;
-            <button
-              // type="submit"
-              onClick={cancelItemMapping}
-              className="btn btn-danger"
-            >
-              <FaXmark />
-            </button>
-          </div>
-          <ToastContainer />
-        </div>
-      )}
-    </div>
+        )}
+      </div>
     </aside>
   );
 }

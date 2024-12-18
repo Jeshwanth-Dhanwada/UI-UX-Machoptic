@@ -18,18 +18,17 @@ import DialogContentText from "@mui/material/DialogContentText";
 import AuthContext from "../context/AuthProvider";
 import { FaEdit } from "react-icons/fa";
 import { getDepartments } from "../api/shovelDetails";
-function DepartmentForm({tableHeight}) {
+function DepartmentForm({ tableHeight }) {
   const { auth } = useContext(AuthContext);
   const [data, setData] = useState([]);
 
-  const showDepartmentData = async(key) =>{
-    const responsedata = await getDepartments()
-    setData(responsedata,key)
-  }
+  const showDepartmentData = async (key) => {
+    const responsedata = await getDepartments();
+    setData(responsedata, key);
+  };
   useEffect(() => {
-    showDepartmentData()
-  }, [])
-
+    showDepartmentData();
+  }, []);
 
   // Initialize state variables for form fields
   const [deptName, setdeptName] = useState();
@@ -183,21 +182,23 @@ function DepartmentForm({tableHeight}) {
 
   const [height, setHeight] = useState();
   useEffect(() => {
-    console.log(tableHeight,"heightt")
-    if(tableHeight > '1' && tableHeight < '360'){
+    console.log(tableHeight, "heightt");
+    if (tableHeight > "1" && tableHeight < "360") {
       setHeight(tableHeight);
-    }
-    else{
-      setHeight('350px')
+    } else {
+      setHeight("350px");
     }
   }, []);
   return (
-    <div className="container-fluid p-2" style={{
-      // height: tableHeight ? tableHeight : '200px',
-      height:  height,
-      overflowY: "scroll",
-      overflowX :"hidden"
-    }}>
+    <div
+      className="container-fluid p-2"
+      style={{
+        // height: tableHeight ? tableHeight : '200px',
+        height: height,
+        overflowY: "scroll",
+        overflowX: "hidden",
+      }}
+    >
       <div className="col-3 d-flex flex-row justify-content-end m-1">
         <input
           type="text"

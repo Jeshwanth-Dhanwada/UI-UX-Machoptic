@@ -3,7 +3,7 @@ import { FaSistrix, FaMinus, FaPlus, FaXmark, FaCheck } from "react-icons/fa6";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BASE_URL } from "../constants/apiConstants";
+import { BASE_URL } from "../utils/apiConstants";
 import Tooltip from "@mui/material/Tooltip";
 
 import Button from "@mui/material/Button";
@@ -19,7 +19,7 @@ import { getUnitsdata } from "../api/shovelDetails";
 import AuthContext from "../context/AuthProvider";
 import { FaEdit } from "react-icons/fa";
 
-function Units({tableHeight}) {
+function Units({ tableHeight }) {
   const { auth } = useContext(AuthContext);
   const [unitDescription, setUnitDescription] = useState("");
   const [conversionRate, setconversionRate] = useState("");
@@ -203,22 +203,24 @@ function Units({tableHeight}) {
 
   const [height, setHeight] = useState();
   useEffect(() => {
-    console.log(tableHeight,"heightt")
-    if(tableHeight > '1' && tableHeight < '360'){
+    console.log(tableHeight, "heightt");
+    if (tableHeight > "1" && tableHeight < "360") {
       setHeight(tableHeight);
-    }
-    else{
-      setHeight('350px')
+    } else {
+      setHeight("350px");
     }
   }, []);
 
   return (
-    <div className="container-fluid" style={{
-      // height: tableHeight ? tableHeight : '200px',
-      height:  height,
-      overflowY: "scroll",
-      overflowX :"hidden"
-    }}>
+    <div
+      className="container-fluid"
+      style={{
+        // height: tableHeight ? tableHeight : '200px',
+        height: height,
+        overflowY: "scroll",
+        overflowX: "hidden",
+      }}
+    >
       <div className="col-3 d-flex flex-row justify-content-end m-1">
         <input
           type="text"
